@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Cine</string>
+
+    <string name="facebook_app_id">1483350911753776</string>
+    <string name="fb_login_protocol_scheme">fb1483350911753776</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
