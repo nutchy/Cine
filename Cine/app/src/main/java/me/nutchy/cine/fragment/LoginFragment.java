@@ -40,6 +40,7 @@ public class LoginFragment extends Fragment {
         loginButton = rootview.findViewById(R.id.login_button);
 
         loginButton.setReadPermissions("email");
+        loginButton.setReadPermissions("public_profile");
 
         // If using in a fragment
         loginButton.setFragment(this);
@@ -51,7 +52,8 @@ public class LoginFragment extends Fragment {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                tvStatus.setText("AccessToken : "+loginResult.getAccessToken());
+                String accessToken= loginResult.getAccessToken().getToken();
+                tvStatus.setText(accessToken);
             }
 
             @Override
