@@ -10,9 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -20,11 +24,15 @@ import me.nutchy.cine.R;
 
 public class LoginFragment extends Fragment {
 
+    private View view;
+
     // Tag for debug
     private static String TAG = LoginFragment.class.getSimpleName();
 
     LoginButton loginButton;
     CallbackManager callbackManager;
+    AccessTokenTracker accessTokenTracker;
+    AccessToken accessToken;
     TextView tvStatus;
 
     public static LoginFragment newInstance(){
@@ -32,43 +40,61 @@ public class LoginFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getActivity());
+        AppEventsLogger.activateApp(getContext());
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(
+                    AccessToken oldAccessToken,
+                    AccessToken currentAccessToken) {
+                // Set the access token using
+                // currentAccessToken when it's loaded or set.
+            }
+        };
+        // If the access token is available already assign it.
+        accessToken = AccessToken.getCurrentAccessToken();
+        callbackManager = CallbackManager.Factory.create();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View rootview = inflater.inflate(R.layout.fragment_login, container, false);
-
-        tvStatus = rootview.findViewById(R.id.login_status);
-        loginButton = rootview.findViewById(R.id.login_button);
-
-        loginButton.setReadPermissions("email");
-        loginButton.setReadPermissions("public_profile");
+        view = inflater.inflate(R.layout.fragment_login, container, false);
+        loginButton = view.findViewById(R.id.login_button);
+        loginButton.setReadPermissions("email", "public_profile");
 
         // If using in a fragment
         loginButton.setFragment(this);
-
-        callbackManager = CallbackManager.Factory.create();
-
         // Callback registration
-        // Use Fragment don't need to Register Callback Manager on Login Manager
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                String accessToken= loginResult.getAccessToken().getToken();
-                Log.d(TAG, ""+loginResult);
-                tvStatus.setText(accessToken);
+                // App code
             }
 
             @Override
             public void onCancel() {
-                tvStatus.setText("Status : Cancel");
+                // App code
             }
 
             @Override
-            public void onError(FacebookException error) {
-
+            public void onError(FacebookException exception) {
+                // App code
             }
         });
-        return rootview;
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+
     }
 
     @Override
@@ -77,4 +103,10 @@ public class LoginFragment extends Fragment {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        accessTokenTracker.stopTracking();
+    }
 }
