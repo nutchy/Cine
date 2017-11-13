@@ -77,7 +77,7 @@ public class MainActivity extends FragmentActivity {
                                 try {
                                     String email = object.getString("email");
                                     String name = object.getString("name");
-                                    String img = object.getString("picture");
+                                    String img = object.getJSONObject("picture").getJSONObject("data").getString("url");
                                     System.out.println(email);
                                     System.out.println(name);
                                     System.out.println(img);
@@ -88,7 +88,7 @@ public class MainActivity extends FragmentActivity {
                             }
                         });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,link,email,picture");
+                parameters.putString("fields", "id,name,link,email,picture.type(large)");
                 request.setParameters(parameters);
                 request.executeAsync();
 
