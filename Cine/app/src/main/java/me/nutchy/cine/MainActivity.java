@@ -32,14 +32,11 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-import me.nutchy.cine.fragment.LoginFragment;
-
 
 public class MainActivity extends FragmentActivity {
 
 
     private static final String TAG = "LOGIN_TAG";
-    private LoginFragment loginFragment;
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     private AccessToken accessToken;
