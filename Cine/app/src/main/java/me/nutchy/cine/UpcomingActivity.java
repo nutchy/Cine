@@ -2,7 +2,10 @@ package me.nutchy.cine;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
+import me.nutchy.cine.Adapter.MoviesAdapter;
 import me.nutchy.cine.Api.TmdbApi;
 import me.nutchy.cine.Model.Movies;
 import okhttp3.OkHttpClient;
@@ -37,8 +40,8 @@ public class UpcomingActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Movies> call, Response<Movies> response) {
                 if(response.isSuccessful()){
-                    Movies result = response.body();
-                    System.out.println(result.getResults().get(0).getTitle().toString());
+                    Movies movies = response.body();
+                    showUpcomingList(movies);
                 }
             }
 
@@ -47,5 +50,13 @@ public class UpcomingActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void showUpcomingList(Movies movies){
+        MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_movies);
+        recyclerView.setLayoutManager(new LinearLayoutManager
+                (this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(moviesAdapter);
     }
 }

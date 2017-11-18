@@ -8,6 +8,7 @@ public class Movie {
     private int vote_count, id;
     private String title, poster_path, original_language,
             original_title, backdrop_path, release_date;
+    public String BASE_URL_POSTER = "https://image.tmdb.org/t/p/w500";
     private boolean video, adult;
     private float vote_average, popularity;
 
