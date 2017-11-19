@@ -1,10 +1,17 @@
 package me.nutchy.cine;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import me.nutchy.cine.Adapter.MoviesAdapter;
 import me.nutchy.cine.Api.TmdbApi;
@@ -25,6 +32,23 @@ public class UpcomingActivity extends AppCompatActivity implements MoviesAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upcoming);
         getUpcoming();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            for (UserInfo profile : user.getProviderData()) {
+                // Id of the provider (ex: google.com)
+                String providerId = profile.getProviderId();
+                String uid = profile.getUid();
+                String name = profile.getDisplayName();
+                String email = profile.getEmail();
+                Uri photoUrl = profile.getPhotoUrl();
+                System.out.println(providerId);
+                System.out.println(uid);
+                System.out.println(name);
+                System.out.println(email);
+                System.out.println(photoUrl);
+                System.out.println("============");
+            }
+        }
     }
 
     public void getUpcoming(){

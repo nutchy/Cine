@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -26,11 +27,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+
+import me.nutchy.cine.Model.User;
 
 
 public class MainActivity extends FragmentActivity {
@@ -38,19 +43,14 @@ public class MainActivity extends FragmentActivity {
 
     private static final String TAG = "LOGIN_TAG";
     private CallbackManager callbackManager;
-    private AccessTokenTracker accessTokenTracker;
-    private AccessToken accessToken;
-    private ProfileTracker profileTracker;
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
 
         callbackManager = CallbackManager.Factory.create();
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -62,33 +62,6 @@ public class MainActivity extends FragmentActivity {
             public void onSuccess(LoginResult loginResult) {
                 // App code
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
-
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(
-                                    JSONObject object,
-                                    GraphResponse response) {
-                                Log.v("LoginActivity", response.toString());
-                                try {
-                                    String email = object.getString("email");
-                                    String name = object.getString("name");
-                                    String img = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                                    System.out.println(email);
-                                    System.out.println(name);
-                                    System.out.println(img);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,link,email,picture.type(large)");
-                request.setParameters(parameters);
-                request.executeAsync();
-
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
@@ -105,26 +78,18 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        profileTracker = new ProfileTracker() {
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            protected void onCurrentProfileChanged(
-                    Profile oldProfile,
-                    Profile currentProfile) {
-                // App code
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    onAuthSuccess(user);
+                    startUpcomingActivity();
+                }
             }
         };
-        accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(
-                    AccessToken oldAccessToken,
-                    AccessToken currentAccessToken) {
-                // Set the access token using
-                // currentAccessToken when it's loaded or set.
-            }
-        };
-        // If the access token is available already assign it.
-        accessToken = AccessToken.getCurrentAccessToken();
-
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -137,15 +102,11 @@ public class MainActivity extends FragmentActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            onAuthSuccess(mAuth.getCurrentUser());
 
-//                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-//                            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
                         }
 
                     }
@@ -161,16 +122,45 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        accessTokenTracker.stopTracking();
-        profileTracker.stopTracking();
+        mAuth.addAuthStateListener(firebaseAuthListener);
     }
 
     @Override
     public void onStart() {
         super.onStart();
+
+        mAuth.addAuthStateListener(firebaseAuthListener);
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
+        if (mAuth.getCurrentUser() != null) {
+            onAuthSuccess(mAuth.getCurrentUser());
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (firebaseAuthListener != null) {
+            mAuth.removeAuthStateListener(firebaseAuthListener);
+        }
+    }
+
+    private void onAuthSuccess(FirebaseUser firebaseUser) {
+        String email = firebaseUser.getEmail();
+        String imageUrl = String.valueOf(firebaseUser.getPhotoUrl());
+        String fullName = firebaseUser.getDisplayName();
+        String uid = firebaseUser.getUid();
+        User user = new User(imageUrl, email, fullName, uid);
+
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference mUsers = mDatabase.child("users");
+        mUsers.child(firebaseUser.getUid()).setValue(user);
+
+        startUpcomingActivity();
+    }
+
+    private void startUpcomingActivity(){
+        startActivity(new Intent(this, UpcomingActivity.class));
+        finish();
     }
 
 
