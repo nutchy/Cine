@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.support.v7.widget.Toolbar;
 
@@ -29,11 +30,18 @@ public class MovieDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
         ImageView iV_poster = (ImageView) findViewById(R.id.iV_poster);
         Glide.with(this).load(movie.BASE_URL_POSTER+movie.getPoster_path())
                 .into(iV_poster);
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
