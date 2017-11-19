@@ -1,5 +1,6 @@
 package me.nutchy.cine;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import me.nutchy.cine.Adapter.MoviesAdapter;
 import me.nutchy.cine.Api.TmdbApi;
+import me.nutchy.cine.Model.Movie;
 import me.nutchy.cine.Model.Movies;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -16,7 +18,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class UpcomingActivity extends AppCompatActivity {
+public class UpcomingActivity extends AppCompatActivity implements MoviesAdapter.MoviesAdapterListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +56,17 @@ public class UpcomingActivity extends AppCompatActivity {
 
     public void showUpcomingList(Movies movies){
         MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
+        moviesAdapter.setMoviesAdapterListener(this);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_movies);
         recyclerView.setLayoutManager(new LinearLayoutManager
                 (this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(moviesAdapter);
+    }
+
+    @Override
+    public void onItemClickListener(Movie movie) {
+        Intent intent = new Intent(this, MovieDetailActivity.class);
+        intent.putExtra("movie", movie);
+        startActivity(intent);
     }
 }

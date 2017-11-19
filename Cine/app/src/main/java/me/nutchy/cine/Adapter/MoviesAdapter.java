@@ -23,6 +23,19 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
     private Movies movies;
     private Context context;
 
+    private MoviesAdapterListener moviesAdapterListener;
+    public interface MoviesAdapterListener {
+        void onItemClickListener(Movie movie);
+    }
+
+    public MoviesAdapterListener getMoviesAdapterListener() {
+        return moviesAdapterListener;
+    }
+
+    public void setMoviesAdapterListener(MoviesAdapterListener moviesAdapterListener) {
+        this.moviesAdapterListener = moviesAdapterListener;
+    }
+
     public MoviesAdapter(Movies movies, Context context) {
         this.movies = movies;
         this.context = context;
@@ -37,10 +50,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
 
     @Override
     public void onBindViewHolder(MoviesHolder holder, int position) {
-        Movie movie = movies.getResults().get(position);
+        final Movie movie = movies.getResults().get(position);
         ImageView iV_poster = holder.getiV_poster();
         Glide.with(context)
                 .load(movie.BASE_URL_POSTER + movie.getPoster_path()).into(iV_poster);
+        holder.iV_poster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moviesAdapterListener.onItemClickListener(movie);
+            }
+        });
 
     }
 

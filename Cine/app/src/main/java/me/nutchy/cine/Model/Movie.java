@@ -1,10 +1,13 @@
 package me.nutchy.cine.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by nutchy on 18/11/2017 AD.
  */
 
-public class Movie {
+public class Movie implements Parcelable {
     private int vote_count, id;
     private String title, poster_path, original_language,
             original_title, backdrop_path, release_date;
@@ -107,4 +110,58 @@ public class Movie {
     public void setPopularity(float popularity) {
         this.popularity = popularity;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.vote_count);
+        dest.writeInt(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.poster_path);
+        dest.writeString(this.original_language);
+        dest.writeString(this.original_title);
+        dest.writeString(this.backdrop_path);
+        dest.writeString(this.release_date);
+        dest.writeString(this.BASE_URL_POSTER);
+        dest.writeByte(this.video ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.adult ? (byte) 1 : (byte) 0);
+        dest.writeFloat(this.vote_average);
+        dest.writeFloat(this.popularity);
+    }
+
+    public Movie() {
+    }
+
+    protected Movie(Parcel in) {
+        this.vote_count = in.readInt();
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.poster_path = in.readString();
+        this.original_language = in.readString();
+        this.original_title = in.readString();
+        this.backdrop_path = in.readString();
+        this.release_date = in.readString();
+        this.BASE_URL_POSTER = in.readString();
+        this.video = in.readByte() != 0;
+        this.adult = in.readByte() != 0;
+        this.vote_average = in.readFloat();
+        this.popularity = in.readFloat();
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }
