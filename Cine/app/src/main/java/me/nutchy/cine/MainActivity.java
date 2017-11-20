@@ -29,11 +29,12 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initLayout();
+    }
+
+    public void initLayout(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -55,26 +56,21 @@ public class MainActivity extends AppCompatActivity
 
         // Binding for set values
         View headerView = navigationView.getHeaderView(0);
+        setUserDetail(headerView);
 
+
+    }
+
+    public void setUserDetail(View view){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
-            String uid = user.getUid();
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            Uri photoUrl = user.getPhotoUrl();
-            String avatarUrl = photoUrl.toString();
-            System.out.println(uid);
-            System.out.println(name);
-            System.out.println(email);
-            System.out.println(avatarUrl);
-            System.out.println("============");
+            TextView tv_fullName = view.findViewById(R.id.nav_fullName);
+            TextView tv_email = view.findViewById(R.id.nav_email);
+            ImageView iv_avatar = view.findViewById(R.id.nav_avatar);
 
-            TextView tv_fullName = headerView.findViewById(R.id.nav_fullName);
-            TextView tv_email = headerView.findViewById(R.id.nav_email);
-            ImageView iv_avatar = headerView.findViewById(R.id.nav_avatar);
-            tv_fullName.setText(name);
-            tv_email.setText(email);
-            Glide.with(this).load(avatarUrl).into(iv_avatar);
+            tv_fullName.setText(user.getDisplayName());
+            tv_email.setText(user.getEmail());
+            Glide.with(this).load(user.getPhotoUrl().toString()).into(iv_avatar);
         }
     }
 
