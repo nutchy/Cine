@@ -10,8 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import me.nutchy.cine.Adapter.MoviesAdapter;
 import me.nutchy.cine.Api.TmdbApi;
@@ -23,7 +21,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class UpcomingActivity extends AppCompatActivity implements MoviesAdapter.MoviesAdapterListener {
 

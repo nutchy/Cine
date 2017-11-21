@@ -148,7 +148,9 @@ public class LoginActivity extends FragmentActivity {
 
     private void startUpcomingActivity(){
         finish();
-        startActivity(new Intent(this, UpcomingActivity.class));
+        Intent intent = new Intent(this, UpcomingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
 
     }
 

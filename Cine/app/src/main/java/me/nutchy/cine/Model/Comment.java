@@ -1,8 +1,13 @@
 package me.nutchy.cine.Model;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class Comment {
     private String comment, fullName, uid, commentId;
     private int movieId;
+
+    public Comment(){}
 
     public Comment(String comment, String fullName, String uid, int movieId, String commentId) {
         this.comment = comment;
