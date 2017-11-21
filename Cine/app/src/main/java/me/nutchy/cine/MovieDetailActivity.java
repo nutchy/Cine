@@ -38,28 +38,35 @@ import butterknife.ButterKnife;
 import me.nutchy.cine.Adapter.CommentsAdapter;
 import me.nutchy.cine.Model.Comment;
 import me.nutchy.cine.Model.Movie;
+import me.nutchy.cine.Model.Rating;
 
 public class MovieDetailActivity extends AppCompatActivity {
-
+    private DatabaseReference databaseReference;
+    private Movie movie;
+    private FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
         Intent intent = getIntent();
-        final Movie movie = intent.getParcelableExtra("movie");
-
+        movie = intent.getParcelableExtra("movie");
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         initToolbar();
         initRatingBar();
-        displayPoster(movie);
-        displayComment(movie);
+        initComment();
+        displayPoster();
+        displayComment();
+    }
 
+    private void initComment() {
         final EditText et_comment = (EditText) findViewById(R.id.et_comment);
         Button btn_comment = (Button) findViewById(R.id.btn_comment);
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String comment = et_comment.getText().toString();
-                addCommentToFirebase(comment, movie);
+                addCommentToFirebase(comment);
             }
         });
     }
@@ -77,10 +84,21 @@ public class MovieDetailActivity extends AppCompatActivity {
         ratingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MovieDetailActivity.this,
-                        ratingTv.getText(), Toast.LENGTH_SHORT).show();
+                int rating = Integer.parseInt(ratingTv.getText().toString());
+                addRatingToFirebase(rating);
             }
         });
+    }
+
+    private void addRatingToFirebase(int rating) {
+        DatabaseReference mRatingRef = databaseReference
+                .child("ratings");
+        String key = mRatingRef.child(String.valueOf(movie.getId())).push().getKey();
+        Rating mRating = new Rating(user.getUid(),movie.getId(), rating);
+        mRatingRef.child(String.valueOf(movie.getId())).child(key).setValue(mRating);
+
+        Toast.makeText(MovieDetailActivity.this
+                , String.valueOf(rating), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -89,13 +107,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         return true;
     }
 
-    public void displayPoster(Movie movie){
+    public void displayPoster(){
         ImageView iV_poster = (ImageView) findViewById(R.id.iV_poster);
         Glide.with(this).load(movie.BASE_URL_POSTER + movie.getPoster_path())
                 .into(iV_poster);
     }
 
-    public void displayComment(Movie movie){
+    public void displayComment(){
         CommentsAdapter commentsAdapter = new CommentsAdapter(this, movie);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_comments);
         recyclerView.setLayoutManager(new LinearLayoutManager
@@ -112,10 +130,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void addCommentToFirebase(String comment, Movie movie) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    public void addCommentToFirebase(String comment) {
         DatabaseReference mCommentRef = databaseReference.child("comments");
 
         String key = mCommentRef.child(String.valueOf(movie.getId())).push().getKey();
@@ -125,4 +140,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         Toast.makeText(MovieDetailActivity.this, "Comment Added.", Toast.LENGTH_SHORT)
                 .show();
     }
+
+
 }
