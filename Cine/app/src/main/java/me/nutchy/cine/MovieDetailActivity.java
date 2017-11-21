@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.support.v7.widget.Toolbar;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,10 +41,6 @@ import me.nutchy.cine.Model.Movie;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
-    private String TAG_TITLE = "MOVIE_TITLE";
-    private DatabaseReference mDatabase;
-    private List<Comment> commentList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +49,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         final Movie movie = intent.getParcelableExtra("movie");
 
         initToolbar();
+        initRatingBar();
         displayPoster(movie);
         displayComment(movie);
 
@@ -59,10 +60,27 @@ public class MovieDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String comment = et_comment.getText().toString();
                 addCommentToFirebase(comment, movie);
-
             }
         });
+    }
 
+    private void initRatingBar() {
+        Button ratingBtn = (Button) findViewById(R.id.btn_rating);
+        final TextView ratingTv = (TextView) findViewById(R.id.tv_rating);
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                ratingTv.setText(String.valueOf((int)rating));
+            }
+        });
+        ratingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MovieDetailActivity.this,
+                        ratingTv.getText(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
