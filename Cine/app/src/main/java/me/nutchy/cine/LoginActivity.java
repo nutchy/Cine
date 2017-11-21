@@ -78,16 +78,12 @@ public class LoginActivity extends FragmentActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     onAuthSuccess(user);
-                    startUpcomingActivity();
                 }
             }
         };
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
-
-        Log.d(TAG, "handleFacebookAccessToken:" + token);
-
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -96,12 +92,10 @@ public class LoginActivity extends FragmentActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             onAuthSuccess(mAuth.getCurrentUser());
-
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                         }
-
                     }
                 });
     }
@@ -125,7 +119,8 @@ public class LoginActivity extends FragmentActivity {
         mAuth.addAuthStateListener(firebaseAuthListener);
         // Check if user is signed in (non-null) and update UI accordingly.
         if (mAuth.getCurrentUser() != null) {
-            onAuthSuccess(mAuth.getCurrentUser());
+//            onAuthSuccess(mAuth.getCurrentUser());
+            startUpcomingActivity();
         }
     }
 
@@ -152,8 +147,11 @@ public class LoginActivity extends FragmentActivity {
     }
 
     private void startUpcomingActivity(){
-        startActivity(new Intent(this, MainActivity.class));
         finish();
+        Intent intent = new Intent(this, UpcomingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
     }
 
 

@@ -49,7 +49,7 @@ dependencies {
 
     implementation 'com.github.pedrovgs:draggablepanel:1.9'
     implementation 'com.pnikosis:materialish-progress:1.7'
-
+    implementation 'me.zhanghai.android.materialratingbar:library:1.2.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 

@@ -1,5 +1,8 @@
 package me.nutchy.cine.Model;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class User {
     private String imgurl;
     private String email;
