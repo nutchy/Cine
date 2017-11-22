@@ -1,6 +1,7 @@
 package me.nutchy.cine;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -32,17 +33,25 @@ import me.nutchy.cine.Model.User;
 
 public class LoginActivity extends FragmentActivity {
 
+    private static int SPLASH_TIME_OUT = 3000; // 4 sec
 
     private static final String TAG = "LOGIN_TAG";
     private CallbackManager callbackManager;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener firebaseAuthListener;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //Show Landing , Splash
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(mAuth.getCurrentUser() != null){
+                    onAuthSuccess(mAuth.getCurrentUser());
+                }
+            }
+        }, SPLASH_TIME_OUT);
 
         callbackManager = CallbackManager.Factory.create();
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -72,15 +81,7 @@ public class LoginActivity extends FragmentActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    onAuthSuccess(user);
-                }
-            }
-        };
+
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -109,27 +110,20 @@ public class LoginActivity extends FragmentActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mAuth.addAuthStateListener(firebaseAuthListener);
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        mAuth.addAuthStateListener(firebaseAuthListener);
         // Check if user is signed in (non-null) and update UI accordingly.
-        if (mAuth.getCurrentUser() != null) {
-//            onAuthSuccess(mAuth.getCurrentUser());
-            startUpcomingActivity();
-        }
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (firebaseAuthListener != null) {
-            mAuth.removeAuthStateListener(firebaseAuthListener);
-        }
+
     }
 
     private void onAuthSuccess(FirebaseUser firebaseUser) {
@@ -143,12 +137,12 @@ public class LoginActivity extends FragmentActivity {
         DatabaseReference mUsers = mDatabase.child("users");
         mUsers.child(firebaseUser.getUid()).setValue(user);
 
-        startUpcomingActivity();
+        startMainActivity();
     }
 
-    private void startUpcomingActivity(){
+    private void startMainActivity(){
         finish();
-        Intent intent = new Intent(this, UpcomingActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 

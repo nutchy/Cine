@@ -8,4 +8,9 @@
     tools:context="me.nutchy.cine.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <fragment
+        android:id="@+id/main_fragment"
+        android:layout_width="match_parent"
+        android:name="me.nutchy.cine.MainFragment"
+        android:layout_height="match_parent"/>
 </android.support.constraint.ConstraintLayout>

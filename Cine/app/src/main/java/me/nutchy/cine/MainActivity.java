@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -30,7 +31,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(savedInstanceState == null){
+            initialFragment();
+        }
         initLayout();
+    }
+
+    private void initialFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.main_fragment, new MainFragment()).commit();
     }
 
     public void initLayout(){
@@ -138,6 +147,7 @@ public class MainActivity extends AppCompatActivity
         LoginManager.getInstance().logOut();
         finish();
         startActivity(new Intent(this, LoginActivity.class));
+
 
     }
 
