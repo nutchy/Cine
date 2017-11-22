@@ -31,17 +31,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.ButterKnife;
 import me.nutchy.cine.Adapter.CommentsAdapter;
 import me.nutchy.cine.Model.Comment;
 import me.nutchy.cine.Model.FavoriteMovie;
+import me.nutchy.cine.Model.FavoriteMovieList;
 import me.nutchy.cine.Model.Movie;
 import me.nutchy.cine.Model.Rating;
 
 public class MovieDetailActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private Movie movie;
-    private FavoriteMovie favoriteMovie;
+    private FavoriteMovieList favoriteMovieList;
+    private FavoriteMovie mFavorite;
+
     private FirebaseUser user;
     private Context context = this;
 
@@ -53,7 +59,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         movie = intent.getParcelableExtra("movie");
         user = FirebaseAuth.getInstance().getCurrentUser();
-        favoriteMovie = new FavoriteMovie();
+        favoriteMovieList = new FavoriteMovieList();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         initToolbar();
         initRatingBar();
@@ -64,17 +70,21 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     private void initFavorite() {
+        favoriteMovieList = new FavoriteMovieList();
         final Button btn_favorite = (Button) findViewById(R.id.btn_favorite);
         DatabaseReference mFavoriteRef = databaseReference.child("favorites")
                 .child(String.valueOf(user.getUid()));
 
-        mFavoriteRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        mFavoriteRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                favoriteMovieList.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    if (ds.getValue().equals(movie.getId())) {
-                        favoriteMovie = new FavoriteMovie(String.valueOf(movie.getId()));
+                    FavoriteMovie favoriteMovie = ds.getValue(FavoriteMovie.class);
+                    if(favoriteMovie.getMovieId().equals(String.valueOf(movie.getId()))){
+                        mFavorite = favoriteMovie;
                     }
+                    favoriteMovieList.add(favoriteMovie);
                 }
             }
 
@@ -95,15 +105,17 @@ public class MovieDetailActivity extends AppCompatActivity {
     public void onClickFavorite() {
         DatabaseReference mFavoriteRef = databaseReference.child("favorites")
                 .child(String.valueOf(user.getUid()));
-        if (favoriteMovie != null && favoriteMovie.getMovieId() != null) {
+
+        if (mFavorite != null && mFavorite.getMovieId().equals(String.valueOf(movie.getId()))) {
             // Remove Favorite
-            favoriteMovie = new FavoriteMovie();
-            mFavoriteRef.setValue(favoriteMovie);
+            favoriteMovieList.removeByMovieId(movie.getId());
+            mFavoriteRef.setValue(favoriteMovieList.getFavoriteMovies());
             Toast.makeText(MovieDetailActivity.this, "Deleted.", Toast.LENGTH_SHORT).show();
         } else {
             // Add this movie to favorite
-            favoriteMovie = new FavoriteMovie(String.valueOf(movie.getId()));
-            mFavoriteRef.setValue(favoriteMovie);
+            mFavorite = new FavoriteMovie(String.valueOf(movie.getId()));
+            favoriteMovieList.add(mFavorite);
+            mFavoriteRef.setValue(favoriteMovieList.getFavoriteMovies());
             Toast.makeText(MovieDetailActivity.this, "Added to Favorite.", Toast.LENGTH_SHORT).show();
         }
     }

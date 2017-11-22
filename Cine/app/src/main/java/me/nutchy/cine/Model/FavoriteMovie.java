@@ -20,4 +20,5 @@ public class FavoriteMovie {
     public void setMovieId(String movieId) {
         this.movieId = movieId;
     }
+
 }
