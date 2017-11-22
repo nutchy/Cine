@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -79,8 +80,7 @@ public class UpcomingActivity extends AppCompatActivity implements MoviesAdapter
         MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
         moviesAdapter.setMoviesAdapterListener(this);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_movies);
-        recyclerView.setLayoutManager(new LinearLayoutManager
-                (this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.setAdapter(moviesAdapter);
     }
 
