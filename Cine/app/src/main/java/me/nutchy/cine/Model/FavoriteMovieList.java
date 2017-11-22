@@ -3,42 +3,38 @@ package me.nutchy.cine.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by nutchy on 23/11/2017 AD.
- */
-
 public class FavoriteMovieList {
-    private List<FavoriteMovie> favoriteMovies = new ArrayList<>();
+    private List<Movie> favoriteMovies = new ArrayList<>();
 
     public FavoriteMovieList(){
 
     }
 
-    public FavoriteMovieList(List<FavoriteMovie> favoriteMovies) {
+    public FavoriteMovieList(List<Movie> favoriteMovies) {
         this.favoriteMovies = favoriteMovies;
     }
     public void clear(){
         favoriteMovies.clear();
     }
 
-    public void add(FavoriteMovie favoriteMovie){
+    public void add(Movie favoriteMovie){
         this.favoriteMovies.add(favoriteMovie);
     }
     public void removeByIndex(int index){
         this.favoriteMovies.remove(index);
     }
 
-    public List<FavoriteMovie> getFavoriteMovies() {
+    public List<Movie> getFavoriteMovies() {
         return favoriteMovies;
     }
-    public void remove(FavoriteMovie fm){
+    public void remove(Movie fm){
         favoriteMovies.remove(fm);
     }
 
     public void removeByMovieId(int id) {
-        for(FavoriteMovie fm: favoriteMovies){
-            if(fm.getMovieId().equals(String.valueOf(id))){
-                fm.setMovieId(null);
+        for(Movie fm: favoriteMovies){
+            if(fm.getId()==id){
+                favoriteMovies.remove(fm);
             }
         }
     }

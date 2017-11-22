@@ -46,10 +46,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private Movie movie;
     private FavoriteMovieList favoriteMovieList;
-    private FavoriteMovie mFavorite;
-
     private FirebaseUser user;
-    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +77,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 favoriteMovieList.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    FavoriteMovie favoriteMovie = ds.getValue(FavoriteMovie.class);
-                    if(favoriteMovie.getMovieId().equals(String.valueOf(movie.getId()))){
-                        mFavorite = favoriteMovie;
-                    }
+                    Movie favoriteMovie = ds.getValue(Movie.class);
                     favoriteMovieList.add(favoriteMovie);
                 }
             }
@@ -105,18 +99,15 @@ public class MovieDetailActivity extends AppCompatActivity {
     public void onClickFavorite() {
         DatabaseReference mFavoriteRef = databaseReference.child("favorites")
                 .child(String.valueOf(user.getUid()));
-
-        if (mFavorite != null && mFavorite.getMovieId().equals(String.valueOf(movie.getId()))) {
-            // Remove Favorite
-            favoriteMovieList.removeByMovieId(movie.getId());
-            mFavoriteRef.setValue(favoriteMovieList.getFavoriteMovies());
-            Toast.makeText(MovieDetailActivity.this, "Deleted.", Toast.LENGTH_SHORT).show();
+        boolean isFavorite = false;
+        for(Movie m : favoriteMovieList.getFavoriteMovies()){
+            if(m.getId() == movie.getId()) isFavorite = true;
+        }
+        if(isFavorite){
+            // unFavorite this movie
+            mFavoriteRef.child(String.valueOf(movie.getId())).setValue(null);
         } else {
-            // Add this movie to favorite
-            mFavorite = new FavoriteMovie(String.valueOf(movie.getId()));
-            favoriteMovieList.add(mFavorite);
-            mFavoriteRef.setValue(favoriteMovieList.getFavoriteMovies());
-            Toast.makeText(MovieDetailActivity.this, "Added to Favorite.", Toast.LENGTH_SHORT).show();
+            mFavoriteRef.child(String.valueOf(movie.getId())).setValue(movie);
         }
     }
 

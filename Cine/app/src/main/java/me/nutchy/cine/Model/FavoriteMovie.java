@@ -5,19 +5,19 @@ package me.nutchy.cine.Model;
  */
 
 public class FavoriteMovie {
-    private String movieId;
+    private int movieId;
 
     public FavoriteMovie(){}
 
-    public FavoriteMovie(String movieId) {
+    public FavoriteMovie(int movieId) {
         this.movieId = movieId;
     }
 
-    public String getMovieId() {
+    public int getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(String movieId) {
+    public void setMovieId(int movieId) {
         this.movieId = movieId;
     }
 
