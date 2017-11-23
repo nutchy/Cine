@@ -52,6 +52,8 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'info.hoang8f:fbutton:1.0.5'
+    implementation 'com.android.support:palette-v7:21.0.0'
+    implementation 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
 
 }
 
