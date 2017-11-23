@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -60,6 +61,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
                 moviesAdapterListener.onItemClickListener(movie);
             }
         });
+        TextView movieName = holder.tv_MovieName;
+        movieName.setText(movie.getTitle());
 
     }
 
@@ -71,10 +74,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
     public class MoviesHolder extends RecyclerView.ViewHolder {
 
         private ImageView iV_poster;
+        private TextView tv_MovieName;
 
         public MoviesHolder(View itemView) {
             super(itemView);
             iV_poster = itemView.findViewById(R.id.iV_poster);
+            tv_MovieName = itemView.findViewById(R.id.tv_movieName);
         }
 
         public ImageView getiV_poster() {
@@ -83,6 +88,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
 
         public void setiV_poster(ImageView iV_poster) {
             this.iV_poster = iV_poster;
+        }
+
+        public void setTv_MovieName(TextView tv_MovieName) {
+            this.tv_MovieName = tv_MovieName;
         }
     }
 }

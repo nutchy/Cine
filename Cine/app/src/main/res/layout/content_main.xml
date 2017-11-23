@@ -4,13 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="me.nutchy.cine.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <fragment
-        android:id="@+id/main_fragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:name="me.nutchy.cine.MainFragment"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Upcoming Movies"
+            android:textColor="#c8ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rc_upcoming_movies"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:paddingRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

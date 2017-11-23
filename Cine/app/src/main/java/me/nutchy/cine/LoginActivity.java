@@ -81,7 +81,6 @@ public class LoginActivity extends FragmentActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-
     }
 
     private void handleFacebookAccessToken(AccessToken token) {

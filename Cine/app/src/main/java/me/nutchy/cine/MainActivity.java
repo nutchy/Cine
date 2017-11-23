@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,22 +27,68 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import me.nutchy.cine.Adapter.MoviesAdapter;
+import me.nutchy.cine.Api.TmdbApi;
+import me.nutchy.cine.Model.Movie;
+import me.nutchy.cine.Model.Movies;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MoviesAdapter.MoviesAdapterListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(savedInstanceState == null){
-            initialFragment();
-        }
         initLayout();
+        initUpcomingMovies();
     }
 
-    private void initialFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.main_fragment, new MainFragment()).commit();
+    private void initUpcomingMovies() {
+        OkHttpClient client = new OkHttpClient.Builder().build();
+        Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(TmdbApi.BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TmdbApi tmdbApi = retrofit.create(TmdbApi.class);
+        Call<Movies> call = tmdbApi.getUpcoming(TmdbApi.API_KEY);
+        call.enqueue(new Callback<Movies>() {
+            @Override
+            public void onResponse(Call<Movies> call, Response<Movies> response) {
+                if(response.isSuccessful()){
+                    Movies movies = response.body();
+                    displayUpcomingList(movies);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Movies> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void displayUpcomingList(Movies movies) {
+        MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
+        moviesAdapter.setMoviesAdapterListener(this);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_upcoming_movies);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(moviesAdapter);
+    }
+
+    @Override
+    public void onItemClickListener(Movie movie) {
+        Intent intent = new Intent(this, MovieDetailActivity.class);
+        intent.putExtra("movie", movie);
+        startActivity(intent);
     }
 
     public void initLayout(){
@@ -133,7 +182,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            userLogout();
 
         }
 
@@ -147,8 +196,6 @@ public class MainActivity extends AppCompatActivity
         LoginManager.getInstance().logOut();
         finish();
         startActivity(new Intent(this, LoginActivity.class));
-
-
     }
 
 }

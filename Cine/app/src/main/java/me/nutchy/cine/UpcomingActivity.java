@@ -80,7 +80,7 @@ public class UpcomingActivity extends AppCompatActivity implements MoviesAdapter
         MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
         moviesAdapter.setMoviesAdapterListener(this);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_movies);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(moviesAdapter);
     }
 
