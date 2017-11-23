@@ -138,10 +138,6 @@ public class MovieDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int rating = Integer.parseInt(ratingTv.getText().toString());
                 addRatingToFirebase(rating);
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-
             }
         });
     }
