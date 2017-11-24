@@ -169,6 +169,16 @@
 
             </LinearLayout>
 
+            <!--Line-->
+            <View
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#14ffffff"
+                />
+
             <!--Rating-->
             <LinearLayout
                 android:padding="12dp"
@@ -181,7 +191,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/colorFontContent"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="6dp">
@@ -200,6 +209,7 @@
                         android:text="1/10"
                         android:textAlignment="center"
                         android:textSize="16sp"
+                        android:textColor="@color/colorFontContent"
                         android:textStyle="bold" />
 
                     <TextView
@@ -207,6 +217,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="123"
+                        android:textColor="@color/colorFontContent"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -214,7 +225,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/colorFontContent"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="6dp">
@@ -233,12 +243,14 @@
                         android:text="0/10"
                         android:textAlignment="center"
                         android:textSize="16sp"
+                        android:textColor="@color/colorFontContent"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_you_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/colorFontContent"
                         android:text="Your Rating"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -247,7 +259,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/colorFontContent"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="6dp">
@@ -266,6 +277,7 @@
                         android:text="1/10"
                         android:textAlignment="center"
                         android:textSize="16sp"
+                        android:textColor="@color/colorFontContent"
                         android:textStyle="bold" />
 
                     <TextView
@@ -273,6 +285,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1234"
+                        android:textColor="@color/colorFontContent"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -308,7 +321,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rc_comments"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 

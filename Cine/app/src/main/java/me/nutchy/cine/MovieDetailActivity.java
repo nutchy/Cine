@@ -45,6 +45,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     ImageView cineStar, youStar, imdbStar;
     TextView cineRate, cineRateCount, userRate, userRateLabel, imdbRate, imdbRateCount;
+    int userRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +90,8 @@ public class MovieDetailActivity extends AppCompatActivity {
                     Rating rating = ds.getValue(Rating.class);
                     Log.e("RATE >>>>>>>>>>>>> ", rating.getRating() + "");
                     userRate.setText(String.valueOf(rating.getRating()) + "/10");
+                    userRating = rating.getRating();
+                    youStar.setImageResource(R.drawable.ic_star_you);
                 }
 
             }
@@ -114,16 +117,22 @@ public class MovieDetailActivity extends AppCompatActivity {
         imdbRate.setText(String.valueOf(movie.getVote_average()));
         imdbRateCount.setText(String.valueOf(movie.getVote_count()));
 
+        if (userRating==0){
+            youStar.setImageResource(R.drawable.ic_star_border);
+        }
         youStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(MovieDetailActivity.this);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setTitle("How would you rate "+movie.getTitle());
                 dialog.setContentView(R.layout.rating_dialog);
                 dialog.setCancelable(true);
                 Button ratingBtn = dialog.findViewById(R.id.btn_rating);
                 final TextView ratingTv =  dialog.findViewById(R.id.tv_rating);
+                ratingTv.setText(String.valueOf(userRating));
                 RatingBar ratingBar = dialog.findViewById(R.id.rating_bar);
+                ratingBar.setRating(userRating);
                 ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                     @Override
                     public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
