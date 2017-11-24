@@ -60,10 +60,27 @@ public class MovieDetailActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         initToolbar();
         initRatingBar();
+        bindRating();
         initComment();
         initFavorite();
         displayPoster();
         displayComment();
+    }
+
+    private void bindRating() {
+        ImageView cineStar = (ImageView) findViewById(R.id.cineStar);
+        ImageView youStar = (ImageView) findViewById(R.id.youStar);
+        ImageView imdbStar = (ImageView) findViewById(R.id.imdbStar);
+        TextView cineRate = (TextView) findViewById(R.id.tv_cine_rate);
+        TextView cineRateCount = (TextView) findViewById(R.id.tv_cine_rateCount);
+        TextView userRate = (TextView) findViewById(R.id.tv_your_rate);
+        TextView userRateLabel = (TextView) findViewById(R.id.tv_you_label);
+        TextView imdbRate = (TextView) findViewById(R.id.tv_imdb_rating);
+        TextView imdbRateCount = (TextView) findViewById(R.id.tv_imdb_rateCount);
+
+        imdbRate.setText(String.valueOf(movie.getVote_average()));
+        imdbRateCount.setText(String.valueOf(movie.getVote_count()));
+
     }
 
     private void initFavorite() {
