@@ -39,7 +39,8 @@
         <activity android:name=".UpcomingActivity">
 
         </activity>
-        <activity android:name=".MovieDetailActivity">
+        <activity android:name=".MovieDetailActivity"
+            android:windowSoftInputMode="adjustPan">
 
         </activity>
         <activity

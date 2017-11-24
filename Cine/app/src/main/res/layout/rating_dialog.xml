@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_rating"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="0"
+        android:textAlignment="center"
+        android:textSize="80sp" />
+    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+        android:id="@+id/rating_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="34dp"
+        android:minHeight="34dp"
+        android:numStars="10"
+        android:padding="16dp"
+        android:rating="0"
+        android:stepSize="1" />
+
+    <Button
+        android:id="@+id/btn_rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RATE" />
+</LinearLayout>

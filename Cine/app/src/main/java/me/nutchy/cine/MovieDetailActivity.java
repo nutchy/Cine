@@ -1,17 +1,16 @@
 package me.nutchy.cine;
 
-import android.app.Activity;
-import android.content.Context;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,16 +22,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import me.nutchy.cine.Adapter.CommentsAdapter;
@@ -43,10 +37,14 @@ import me.nutchy.cine.Model.Movie;
 import me.nutchy.cine.Model.Rating;
 
 public class MovieDetailActivity extends AppCompatActivity {
-    private DatabaseReference databaseReference;
+    DatabaseReference databaseReference, mRatingUserRef;
     private Movie movie;
     private FavoriteMovieList favoriteMovieList;
     private FirebaseUser user;
+    private Menu menu;
+
+    ImageView cineStar, youStar, imdbStar;
+    TextView cineRate, cineRateCount, userRate, userRateLabel, imdbRate, imdbRateCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,33 +57,96 @@ public class MovieDetailActivity extends AppCompatActivity {
         favoriteMovieList = new FavoriteMovieList();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         initToolbar();
-        initRatingBar();
-        bindRating();
+        initRating();
+        bindMovieDetail();
         initComment();
-        initFavorite();
         displayPoster();
         displayComment();
+        displayRaing();
+
     }
 
-    private void bindRating() {
-        ImageView cineStar = (ImageView) findViewById(R.id.cineStar);
-        ImageView youStar = (ImageView) findViewById(R.id.youStar);
-        ImageView imdbStar = (ImageView) findViewById(R.id.imdbStar);
-        TextView cineRate = (TextView) findViewById(R.id.tv_cine_rate);
-        TextView cineRateCount = (TextView) findViewById(R.id.tv_cine_rateCount);
-        TextView userRate = (TextView) findViewById(R.id.tv_your_rate);
-        TextView userRateLabel = (TextView) findViewById(R.id.tv_you_label);
-        TextView imdbRate = (TextView) findViewById(R.id.tv_imdb_rating);
-        TextView imdbRateCount = (TextView) findViewById(R.id.tv_imdb_rateCount);
+    private void bindMovieDetail() {
+        ImageView iV_poster_mDetail = (ImageView) findViewById(R.id.iV_poster_mDetail);
+        Glide.with(this).load(movie.BASE_URL_POSTER+movie.getPoster_path())
+                .into(iV_poster_mDetail);
+        TextView tv_lang = (TextView) findViewById(R.id.tV_lang);
+        TextView tv_release = (TextView) findViewById(R.id.tV_release);
+        TextView tv_genre = (TextView) findViewById(R.id.tV_genre);
+        TextView tv_overview = (TextView) findViewById(R.id.tV_overview);
+
+        tv_lang.setText(movie.getOriginal_language());
+        tv_release.setText(movie.getRelease_date());
+    }
+
+    private void displayRaing() {
+        mRatingUserRef = databaseReference.child("ratings").child(String.valueOf(movie.getId()))
+                .child(user.getUid());
+        mRatingUserRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Rating rating = ds.getValue(Rating.class);
+                    Log.e("RATE >>>>>>>>>>>>> ", rating.getRating() + "");
+                    userRate.setText(String.valueOf(rating.getRating()) + "/10");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void initRating() {
+        cineStar = (ImageView) findViewById(R.id.cineStar);
+        youStar = (ImageView) findViewById(R.id.youStar);
+        imdbStar = (ImageView) findViewById(R.id.imdbStar);
+        cineRate = (TextView) findViewById(R.id.tv_cine_rate);
+        cineRateCount = (TextView) findViewById(R.id.tv_cine_rateCount);
+        userRate = (TextView) findViewById(R.id.tv_your_rate);
+        userRateLabel = (TextView) findViewById(R.id.tv_you_label);
+        imdbRate = (TextView) findViewById(R.id.tv_imdb_rating);
+        imdbRateCount = (TextView) findViewById(R.id.tv_imdb_rateCount);
 
         imdbRate.setText(String.valueOf(movie.getVote_average()));
         imdbRateCount.setText(String.valueOf(movie.getVote_count()));
 
+        youStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(MovieDetailActivity.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.rating_dialog);
+                dialog.setCancelable(true);
+                Button ratingBtn = dialog.findViewById(R.id.btn_rating);
+                final TextView ratingTv =  dialog.findViewById(R.id.tv_rating);
+                RatingBar ratingBar = dialog.findViewById(R.id.rating_bar);
+                ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                    @Override
+                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                        ratingTv.setText(String.valueOf((int) rating));
+                    }
+                });
+                ratingBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int rating = Integer.parseInt(ratingTv.getText().toString());
+                        addRatingToFirebase(rating);
+                        Toast.makeText(getApplicationContext(),"Your rating saved.",Toast.LENGTH_SHORT).show();
+                        dialog.cancel();
+                    }
+                });
+                dialog.show();
+            }
+        });
+
     }
 
-    private void initFavorite() {
+    private void initFavorite(final MenuItem item) {
         favoriteMovieList = new FavoriteMovieList();
-        final Button btn_favorite = (Button) findViewById(R.id.btn_favorite);
         DatabaseReference mFavoriteRef = databaseReference.child("favorites")
                 .child(String.valueOf(user.getUid()));
 
@@ -96,6 +157,9 @@ public class MovieDetailActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Movie favoriteMovie = ds.getValue(Movie.class);
                     favoriteMovieList.add(favoriteMovie);
+                    if (favoriteMovie.getId() == movie.getId()) {
+                        item.setIcon(getResources().getDrawable(R.drawable.ic_favorite));
+                    }
                 }
             }
 
@@ -104,27 +168,29 @@ public class MovieDetailActivity extends AppCompatActivity {
 
             }
         });
-        btn_favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickFavorite();
-            }
-        });
+
 
     }
 
-    public void onClickFavorite() {
+    public void onClickFavorite(MenuItem item) {
         DatabaseReference mFavoriteRef = databaseReference.child("favorites")
                 .child(String.valueOf(user.getUid()));
-        boolean isFavorite = false;
-        for(Movie m : favoriteMovieList.getFavoriteMovies()){
-            if(m.getId() == movie.getId()) isFavorite = true;
+        Boolean isFavorite = false;
+        for (Movie m : favoriteMovieList.getFavoriteMovies()) {
+            if (m.getId() == movie.getId()) {
+                isFavorite = true;
+            }
         }
-        if(isFavorite){
+        if (isFavorite) {
             // unFavorite this movie
             mFavoriteRef.child(String.valueOf(movie.getId())).setValue(null);
+            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_border));
+            Toast.makeText(this, "Removed from Favorite", Toast.LENGTH_SHORT).show();
+
         } else {
             mFavoriteRef.child(String.valueOf(movie.getId())).setValue(movie);
+            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite));
+            Toast.makeText(this, "Added to Favorite ❤️", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -140,34 +206,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void initRatingBar() {
-        Button ratingBtn = (Button) findViewById(R.id.btn_rating);
-        final TextView ratingTv = (TextView) findViewById(R.id.tv_rating);
-        RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                ratingTv.setText(String.valueOf((int) rating));
-            }
-        });
-        ratingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int rating = Integer.parseInt(ratingTv.getText().toString());
-                addRatingToFirebase(rating);
-            }
-        });
-    }
-
     private void addRatingToFirebase(int rating) {
         DatabaseReference mRatingRef = databaseReference
-                .child("ratings");
-        String key = mRatingRef.child(String.valueOf(movie.getId())).push().getKey();
+                .child("ratings").child(String.valueOf(movie.getId())).child(user.getUid());
+        String key = mRatingRef.push().getKey();
         Rating mRating = new Rating(user.getUid(), movie.getId(), rating);
-        mRatingRef.child(String.valueOf(movie.getId())).child(key).setValue(mRating);
-
-        Toast.makeText(MovieDetailActivity.this
-                , String.valueOf(rating), Toast.LENGTH_SHORT).show();
+        mRatingRef.setValue(null);
+        mRatingRef.child(key).setValue(mRating);
     }
 
     @Override
@@ -178,7 +223,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     public void displayPoster() {
         ImageView iV_poster = (ImageView) findViewById(R.id.iV_poster);
-        Glide.with(this).load(movie.BASE_URL_POSTER + movie.getPoster_path())
+        Glide.with(this).load(movie.BASE_URL_POSTER + movie.getBackdrop_path())
                 .into(iV_poster);
     }
 
@@ -210,5 +255,21 @@ public class MovieDetailActivity extends AppCompatActivity {
                 .show();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.movie_detail_menu, menu);
+        this.menu = menu;
+        initFavorite(menu.getItem(0));
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_favorite) {
+            onClickFavorite(item);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
