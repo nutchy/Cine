@@ -5,8 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -61,9 +63,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     public void onBindViewHolder(CommentsHolder holder, int position) {
         TextView tv_fullName = holder.tv_fullName;
         TextView tv_comment = holder.tv_comment;
+        ImageView avatar = holder.avatar;
+        View line = holder.line;
+        if(position==0) line.setVisibility(View.GONE);
         tv_fullName.setText(mComments.get(position).getFullName());
         tv_comment.setText(mComments.get(position).getComment());
-        System.out.println(mComments.get(position).getComment());
+        Glide.with(context).load(mComments.get(position).getAvatar()).into(avatar);
     }
 
     @Override
@@ -73,9 +78,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
     public class CommentsHolder extends RecyclerView.ViewHolder {
         TextView tv_fullName, tv_comment;
+        ImageView avatar;
+        View line;
 
         public CommentsHolder(View itemView) {
             super(itemView);
+            line = itemView.findViewById(R.id.commentLine);
+            avatar = itemView.findViewById(R.id.comment_avatar);
             tv_fullName = itemView.findViewById(R.id.tv_comment_fullName);
             tv_comment = itemView.findViewById(R.id.tv_comment);
 

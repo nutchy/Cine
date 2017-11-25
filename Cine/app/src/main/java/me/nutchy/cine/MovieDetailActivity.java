@@ -258,7 +258,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         DatabaseReference mCommentRef = databaseReference.child("comments");
         String key = mCommentRef.child(String.valueOf(movie.getId())).push().getKey();
         Comment mComment = new Comment(
-                comment, user.getDisplayName(), user.getUid(), movie.getId(), key);
+                comment, user.getDisplayName(), user.getUid(), movie.getId(), key, user.getPhotoUrl().toString());
         mCommentRef.child(String.valueOf(movie.getId())).child(key).setValue(mComment);
         Toast.makeText(MovieDetailActivity.this, "Comment Added.", Toast.LENGTH_SHORT)
                 .show();

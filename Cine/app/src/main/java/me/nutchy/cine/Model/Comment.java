@@ -4,17 +4,26 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class Comment {
-    private String comment, fullName, uid, commentId;
+    private String comment, fullName, uid, commentId, avatar;
     private int movieId;
 
     public Comment(){}
 
-    public Comment(String comment, String fullName, String uid, int movieId, String commentId) {
+    public Comment(String comment, String fullName, String uid, int movieId, String commentId, String avatar) {
         this.comment = comment;
         this.fullName = fullName;
         this.uid = uid;
-        this.movieId = movieId;
         this.commentId = commentId;
+        this.avatar = avatar;
+        this.movieId = movieId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getCommentId() {

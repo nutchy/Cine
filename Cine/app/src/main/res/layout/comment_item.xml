@@ -2,17 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/commentLine"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#14ffffff"
+            />
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_margin="12dp">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/comment_avatar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_favorite"
             />
         <LinearLayout
+            android:paddingLeft="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -21,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fullname"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorFontContent"
                 />
@@ -31,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:text="comment"
                 android:textColor="@color/colorFontContent"
-                android:textSize="20sp"/>
+                android:textSize="16sp"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
