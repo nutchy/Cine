@@ -46,7 +46,44 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initLayout();
+        initPopularMovies();
         initUpcomingMovies();
+    }
+
+    private void initPopularMovies() {
+        OkHttpClient client = new OkHttpClient.Builder().build();
+        Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(TmdbApi.BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TmdbApi tmdbApi = retrofit.create(TmdbApi.class);
+        Call<Movies> call = tmdbApi.getPopular(TmdbApi.API_KEY);
+        call.enqueue(new Callback<Movies>() {
+            @Override
+            public void onResponse(Call<Movies> call, Response<Movies> response) {
+                if(response.isSuccessful()){
+                    Movies movies = response.body();
+                    displayPopularList(movies);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Movies> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void displayPopularList(Movies movies) {
+        MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
+        moviesAdapter.setMoviesAdapterListener(this);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_popular_movies);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(moviesAdapter);
+
     }
 
     private void initUpcomingMovies() {
