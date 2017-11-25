@@ -40,6 +40,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private Movie movie;
     private FavoriteMovieList favoriteMovieList;
     private FirebaseUser user;
+//    FirebaseStorage storage;
     private Menu menu;
 
     ImageView cineStar, youStar, imdbStar;
@@ -57,6 +58,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         favoriteMovieList = new FavoriteMovieList();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+//        storage = FirebaseStorage.getInstance();
         initToolbar();
         initRating();
         bindMovieDetail();
@@ -87,7 +89,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                         }
                     }
                     movieRating = movieRating / totalChild;
-                    cineRate.setText(String.valueOf(movieRating));
+                    cineRate.setText(String.valueOf(movieRating+"/10"));
                     cineRateCount.setText(String.valueOf(totalChild));
                 }
             }
@@ -121,7 +123,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Rating rating = ds.getValue(Rating.class);
                     Log.e("RATE >>>>>>>>>>>>> ", rating.getRating() + "");
-                    userRate.setText(String.valueOf(rating.getRating()) + "/10");
+                    userRate.setText(String.valueOf(rating.getRating()+"/10"));
                     userRating = rating.getRating();
                     youStar.setImageResource(R.drawable.ic_star_you);
                 }
@@ -146,6 +148,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         imdbRate = (TextView) findViewById(R.id.tv_imdb_rating);
         imdbRateCount = (TextView) findViewById(R.id.tv_imdb_rateCount);
 
+        Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/cine-apps.appspot.com/o/New-imdb-logo.png?alt=media&token=527daf19-881e-48ca-8f99-a32a9112a6be").into(imdbStar);
         imdbRate.setText(String.valueOf(movie.getVote_average()));
         imdbRateCount.setText(String.valueOf(movie.getVote_count()));
 

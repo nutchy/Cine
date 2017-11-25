@@ -206,10 +206,10 @@
                         android:id="@+id/tv_cine_rate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        android:text="0/10"
                         android:textAlignment="center"
                         android:textColor="@color/colorFontContent"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -243,7 +243,7 @@
                         android:text="0/10"
                         android:textAlignment="center"
                         android:textColor="@color/colorFontContent"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -259,13 +259,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="center|bottom"
+                    android:layout_gravity="bottom|center_horizontal"
                     android:orientation="vertical"
                     android:padding="6dp">
 
                     <ImageView
+                        android:layout_marginBottom="6dp"
                         android:id="@+id/imdbStar"
-                        android:layout_width="wrap_content"
+                        android:layout_width="48dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_star_you" />
@@ -277,14 +279,14 @@
                         android:text="1/10"
                         android:textAlignment="center"
                         android:textColor="@color/colorFontContent"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_imdb_rateCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1234"
+                        android:text="0"
                         android:textColor="@color/colorFontContent"
                         android:textSize="12sp" />
                 </LinearLayout>
