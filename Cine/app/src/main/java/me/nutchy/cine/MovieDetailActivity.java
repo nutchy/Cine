@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,6 +45,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     ImageView cineStar, youStar, imdbStar;
     TextView cineRate, cineRateCount, userRate, userRateLabel, imdbRate, imdbRateCount;
     int userRating;
+    float movieRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +63,45 @@ public class MovieDetailActivity extends AppCompatActivity {
         initComment();
         displayPoster();
         displayComment();
-        displayRaing();
+        displayUserRaing();
+        displayMovieRating();
 
+    }
+
+    private void displayMovieRating() {
+        DatabaseReference mRatingMovieRef = databaseReference.child("ratings").child(String.valueOf(movie.getId()));
+        mRatingMovieRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                movieRating = 0;
+                long totalChild = 0;
+
+                if (dataSnapshot.hasChildren()) {
+                    totalChild += dataSnapshot.getChildrenCount();
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        Rating rating = ds.getValue(Rating.class);
+                        try {
+                            movieRating += rating.getRating();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    movieRating = movieRating / totalChild;
+                    cineRate.setText(String.valueOf(movieRating));
+                    cineRateCount.setText(String.valueOf(totalChild));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void bindMovieDetail() {
         ImageView iV_poster_mDetail = (ImageView) findViewById(R.id.iV_poster_mDetail);
-        Glide.with(this).load(movie.BASE_URL_POSTER+movie.getPoster_path())
+        Glide.with(this).load(movie.BASE_URL_POSTER + movie.getPoster_path())
                 .into(iV_poster_mDetail);
         TextView tv_lang = (TextView) findViewById(R.id.tV_lang);
         TextView tv_release = (TextView) findViewById(R.id.tV_release);
@@ -80,8 +112,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         tv_release.setText(movie.getRelease_date());
     }
 
-    private void displayRaing() {
-        mRatingUserRef = databaseReference.child("ratings").child(String.valueOf(movie.getId()))
+    private void displayUserRaing() {
+        mRatingUserRef = databaseReference.child("user-ratings").child(String.valueOf(movie.getId()))
                 .child(user.getUid());
         mRatingUserRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -117,7 +149,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         imdbRate.setText(String.valueOf(movie.getVote_average()));
         imdbRateCount.setText(String.valueOf(movie.getVote_count()));
 
-        if (userRating==0){
+        if (userRating == 0) {
             youStar.setImageResource(R.drawable.ic_star_border);
         }
         youStar.setOnClickListener(new View.OnClickListener() {
@@ -125,11 +157,11 @@ public class MovieDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(MovieDetailActivity.this);
 //                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setTitle("How would you rate "+movie.getTitle());
+                dialog.setTitle("How would you rate " + movie.getTitle());
                 dialog.setContentView(R.layout.rating_dialog);
                 dialog.setCancelable(true);
                 Button ratingBtn = dialog.findViewById(R.id.btn_rating);
-                final TextView ratingTv =  dialog.findViewById(R.id.tv_rating);
+                final TextView ratingTv = dialog.findViewById(R.id.tv_rating);
                 ratingTv.setText(String.valueOf(userRating));
                 RatingBar ratingBar = dialog.findViewById(R.id.rating_bar);
                 ratingBar.setRating(userRating);
@@ -144,7 +176,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         int rating = Integer.parseInt(ratingTv.getText().toString());
                         addRatingToFirebase(rating);
-                        Toast.makeText(getApplicationContext(),"Your rating saved.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Your rating saved.", Toast.LENGTH_SHORT).show();
                         dialog.cancel();
                     }
                 });
@@ -217,11 +249,14 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private void addRatingToFirebase(int rating) {
         DatabaseReference mRatingRef = databaseReference
-                .child("ratings").child(String.valueOf(movie.getId())).child(user.getUid());
+                .child("user-ratings").child(String.valueOf(movie.getId())).child(user.getUid());
+        DatabaseReference mRatingMovieRef = databaseReference.child("ratings").child(String.valueOf(movie.getId()));
         String key = mRatingRef.push().getKey();
         Rating mRating = new Rating(user.getUid(), movie.getId(), rating);
         mRatingRef.setValue(null);
         mRatingRef.child(key).setValue(mRating);
+        mRatingMovieRef.setValue(null);
+        mRatingMovieRef.child(key).setValue(mRating);
     }
 
     @Override
@@ -281,4 +316,5 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
