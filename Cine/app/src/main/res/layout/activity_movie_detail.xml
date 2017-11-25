@@ -162,7 +162,7 @@
                     <TextView
                         android:id="@+id/tV_overview"
                         android:layout_width="wrap_content"
-                        android:layout_height="95dp"
+                        android:layout_height="100dp"
                         android:autoSizeTextType="uniform"
                         android:textColor="@color/colorFontContent" />
 

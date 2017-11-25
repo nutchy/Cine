@@ -27,20 +27,29 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
 import me.nutchy.cine.Adapter.CommentsAdapter;
+import me.nutchy.cine.Api.TmdbApi;
 import me.nutchy.cine.Model.Comment;
 import me.nutchy.cine.Model.FavoriteMovie;
 import me.nutchy.cine.Model.FavoriteMovieList;
 import me.nutchy.cine.Model.Movie;
 import me.nutchy.cine.Model.Rating;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieDetailActivity extends AppCompatActivity {
     DatabaseReference databaseReference, mRatingUserRef;
     private Movie movie;
     private FavoriteMovieList favoriteMovieList;
     private FirebaseUser user;
-//    FirebaseStorage storage;
+    //    FirebaseStorage storage;
     private Menu menu;
 
     ImageView cineStar, youStar, imdbStar;
@@ -54,11 +63,12 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        movie = intent.getParcelableExtra("movie");
+        int movieId = intent.getIntExtra("movieId", 0);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        movie = intent.getParcelableExtra("movie");
         favoriteMovieList = new FavoriteMovieList();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-//        storage = FirebaseStorage.getInstance();
+        Log.e(">>>>", movieId+"");
         initToolbar();
         initRating();
         bindMovieDetail();
@@ -67,9 +77,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         displayComment();
         displayUserRaing();
         displayMovieRating();
-
     }
-
     private void displayMovieRating() {
         DatabaseReference mRatingMovieRef = databaseReference.child("ratings").child(String.valueOf(movie.getId()));
         mRatingMovieRef.addValueEventListener(new ValueEventListener() {
@@ -89,7 +97,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                         }
                     }
                     movieRating = movieRating / totalChild;
-                    cineRate.setText(String.valueOf(movieRating+"/10"));
+                    cineRate.setText(String.valueOf(movieRating + "/10"));
                     cineRateCount.setText(String.valueOf(totalChild));
                 }
             }
@@ -112,6 +120,9 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         tv_lang.setText(movie.getOriginal_language());
         tv_release.setText(movie.getRelease_date());
+        tv_overview.setText(movie.getOverview());
+        tv_genre.setText(movie.getAllGenre());
+
     }
 
     private void displayUserRaing() {
@@ -123,7 +134,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Rating rating = ds.getValue(Rating.class);
                     Log.e("RATE >>>>>>>>>>>>> ", rating.getRating() + "");
-                    userRate.setText(String.valueOf(rating.getRating()+"/10"));
+                    userRate.setText(String.valueOf(rating.getRating() + "/10"));
                     userRating = rating.getRating();
                     youStar.setImageResource(R.drawable.ic_star_you);
                 }

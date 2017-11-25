@@ -1,5 +1,7 @@
 package me.nutchy.cine.Api;
 
+import java.util.List;
+
 import me.nutchy.cine.Model.Movie;
 import me.nutchy.cine.Model.Movies;
 import retrofit2.Call;
@@ -21,8 +23,7 @@ public interface TmdbApi {
     Call<Movies> getPopular(@Query("api_key") String api_key);
 
     @GET("3/movie/{movie_id}")
-    Call<Movie> getMovieById(@Path("movie_id") int movie_id, @Query("api_key") String api_key,
-        @Query("language") String language,@Query("append_to_response") String append);
+    Call<Movie> getMovieById(@Path("movie_id") int movie_id, @Query("api_key") String api_key);
 
 
 }
