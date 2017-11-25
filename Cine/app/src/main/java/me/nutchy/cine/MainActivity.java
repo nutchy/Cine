@@ -48,6 +48,35 @@ public class MainActivity extends AppCompatActivity
         initLayout();
         initPopularMovies();
         initUpcomingMovies();
+        testQuery();
+    }
+
+    private void testQuery() {
+        OkHttpClient client = new OkHttpClient.Builder().build();
+        Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(TmdbApi.BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TmdbApi tmdbApi = retrofit.create(TmdbApi.class);
+        Call<Movie> call = tmdbApi.getMovieById(346364,TmdbApi.API_KEY,TmdbApi.BASE_LANG, TmdbApi.APPEND);
+        call.enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                if (response.isSuccessful()){
+                    Movie movie = response.body();
+                    System.out.println(movie.getPoster_path());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+
+            }
+        });
+
     }
 
     private void initPopularMovies() {
