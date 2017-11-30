@@ -241,12 +241,17 @@ public class MovieDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String comment = et_comment.getText().toString();
-                validateComment(comment);
+                if(validateComment(comment)){
+                    et_comment.setText("");
+                    et_comment.setFocusable(false);
+                    et_comment.setFocusableInTouchMode(true);
+
+                }
             }
         });
     }
 
-    private void validateComment(String comment){
+    private boolean validateComment(String comment){
         CommentValidation commentValidation = new CommentValidation();
         ResultValidation resultValidation = commentValidation.validate(comment);
         if(resultValidation.getResult()){
@@ -255,6 +260,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, resultValidation.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        return resultValidation.getResult();
     }
 
     private void addRatingToFirebase(int rating) {
