@@ -1,10 +1,13 @@
 package me.nutchy.cine;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.util.Log;
 
 import com.facebook.AccessToken;
@@ -33,7 +36,7 @@ import me.nutchy.cine.Model.User;
 
 public class LoginActivity extends FragmentActivity {
 
-    private static int SPLASH_TIME_OUT = 1500; // 1.5 sec
+    private static int SPLASH_TIME_OUT = 1200; // 1.5 sec
 
     private static final String TAG = "LOGIN_TAG";
     private CallbackManager callbackManager;
@@ -42,6 +45,7 @@ public class LoginActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        
 
         //Show Landing , Splash
         new Handler().postDelayed(new Runnable() {
@@ -52,6 +56,7 @@ public class LoginActivity extends FragmentActivity {
                 }
             }
         }, SPLASH_TIME_OUT);
+
 
         callbackManager = CallbackManager.Factory.create();
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -81,6 +86,12 @@ public class LoginActivity extends FragmentActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+    }
+
+    private void setupWindowAnimations() {
+        Slide slide = new Slide();
+        slide.setDuration(1000);
+        getWindow().setExitTransition(slide);
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -141,6 +152,7 @@ public class LoginActivity extends FragmentActivity {
 
     private void startMainActivity(){
         finish();
+        setupWindowAnimations();
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
