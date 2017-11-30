@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import me.nutchy.cine.Adapter.MoviesAdapter;
+import me.nutchy.cine.Api.ConnectionAPI;
 import me.nutchy.cine.Api.TmdbApi;
 import me.nutchy.cine.Model.Movie;
 import me.nutchy.cine.Model.Movies;
@@ -39,43 +40,24 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MoviesAdapter.MoviesAdapterListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MoviesAdapter.MoviesAdapterListener, ConnectionAPI.ConnectionApiListener {
+
+    ConnectionAPI connectionAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        connectionAPI = ConnectionAPI.getInstance();
+        connectionAPI.setListener(this);
         setContentView(R.layout.activity_main);
         initLayout();
-        initPopularMovies();
-        initUpcomingMovies();
-
+        initContent();
     }
 
-    private void initPopularMovies() {
-        OkHttpClient client = new OkHttpClient.Builder().build();
-        Retrofit retrofit = new Retrofit
-                .Builder()
-                .baseUrl(TmdbApi.BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        TmdbApi tmdbApi = retrofit.create(TmdbApi.class);
-        Call<Movies> call = tmdbApi.getPopular(TmdbApi.API_KEY);
-        call.enqueue(new Callback<Movies>() {
-            @Override
-            public void onResponse(Call<Movies> call, Response<Movies> response) {
-                if(response.isSuccessful()){
-                    Movies movies = response.body();
-                    displayPopularList(movies);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Movies> call, Throwable t) {
-
-            }
-        });
+    private void initContent() {
+        connectionAPI.getPopularList();
+        connectionAPI.getUpcomingList();
+        connectionAPI.getNowShowingList();
     }
 
     private void displayPopularList(Movies movies) {
@@ -85,33 +67,6 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(moviesAdapter);
 
-    }
-
-    private void initUpcomingMovies() {
-        OkHttpClient client = new OkHttpClient.Builder().build();
-        Retrofit retrofit = new Retrofit
-                .Builder()
-                .baseUrl(TmdbApi.BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        TmdbApi tmdbApi = retrofit.create(TmdbApi.class);
-        Call<Movies> call = tmdbApi.getUpcoming(TmdbApi.API_KEY);
-        call.enqueue(new Callback<Movies>() {
-            @Override
-            public void onResponse(Call<Movies> call, Response<Movies> response) {
-                if(response.isSuccessful()){
-                    Movies movies = response.body();
-                    displayUpcomingList(movies);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Movies> call, Throwable t) {
-
-            }
-        });
     }
 
     private void displayUpcomingList(Movies movies) {
@@ -124,32 +79,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onItemClickListener(Movie movie) {
-        loadMovieDetail(movie);
+        prepareMovieDetail(movie);
     }
 
-    private void loadMovieDetail(Movie movie){
-        OkHttpClient client = new OkHttpClient.Builder().build();
-        Retrofit retrofit = new Retrofit
-                .Builder()
-                .baseUrl(TmdbApi.BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        TmdbApi tmdbApi = retrofit.create(TmdbApi.class);
-        Call<Movie> call = tmdbApi.getMovieById(movie.getId(), TmdbApi.API_KEY);
-        call.enqueue(new Callback<Movie>() {
-            @Override
-            public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (response.isSuccessful()){
-                    Movie movieResponse = response.body();
-                    startMovieDetailActivity(movieResponse);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Movie> call, Throwable t) {
-            }
-        });
+    private void prepareMovieDetail(Movie movie){
+        connectionAPI.getMovieById(movie.getId());
     }
 
     private void startMovieDetailActivity(Movie movie){
@@ -253,4 +187,31 @@ public class MainActivity extends AppCompatActivity
         startActivity(new Intent(this, LoginActivity.class));
     }
 
+    @Override
+    public void onMovieResponse(Movie movie) {
+        startMovieDetailActivity(movie);
+    }
+
+    @Override
+    public void onUpcomingResponse(Movies movies) {
+        displayUpcomingList(movies);
+    }
+
+    @Override
+    public void onPopularResponse(Movies movies) {
+        displayPopularList(movies);
+    }
+
+    @Override
+    public void onNowShowingResponse(Movies movies) {
+        displayNowShowingList(movies);
+    }
+
+    private void displayNowShowingList(Movies movies) {
+        MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
+        moviesAdapter.setMoviesAdapterListener(this);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_now_showing);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(moviesAdapter);
+    }
 }

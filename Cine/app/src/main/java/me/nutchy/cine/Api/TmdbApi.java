@@ -13,8 +13,6 @@ public interface TmdbApi {
 //    Host
     String API_KEY = "7a9375b362fd6eaccb0c036bfa16b282";
     String BASE_URL = "https://api.themoviedb.org/";
-    String BASE_LANG = "en-US";
-    String APPEND = "videos,images";
 
     @GET("3/movie/upcoming")
     Call<Movies> getUpcoming(@Query("api_key") String api_key);
@@ -24,6 +22,9 @@ public interface TmdbApi {
 
     @GET("3/movie/{movie_id}")
     Call<Movie> getMovieById(@Path("movie_id") int movie_id, @Query("api_key") String api_key);
+
+    @GET("3/movie/now_playing")
+    Call<Movies> getNowShowing(@Query("api_key") String api_key);
 
 
 }
