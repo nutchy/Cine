@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "432482507317",
+    "firebase_url": "https://cine-apps.firebaseio.com",
+    "project_id": "cine-apps",
+    "storage_bucket": "cine-apps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432482507317:android:d8ddbcef2c4043ee",
+        "android_client_info": {
+          "package_name": "me.nutchy.cine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "432482507317-6qd6j3e7nrvg1gro6ode2i0msqk4eja5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.nutchy.cine",
+            "certificate_hash": "735c207f5f1d82cb602ebb14c67cfcdde9fb4889"
+          }
+        },
+        {
+          "client_id": "432482507317-fl72bqi7ottdaq3oi3bn5kifdj555t7i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5oAc29qq-2K1t-vWl83GthSyN6TKkABM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "432482507317-fl72bqi7ottdaq3oi3bn5kifdj555t7i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

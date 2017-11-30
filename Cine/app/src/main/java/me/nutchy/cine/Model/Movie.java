@@ -1,15 +1,21 @@
 package me.nutchy.cine.Model;
 
-/**
- * Created by nutchy on 18/11/2017 AD.
- */
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Movie {
-    private int vote_count, id;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Movie implements Parcelable {
+    private int vote_count, id, runtime;
     private String title, poster_path, original_language,
-            original_title, backdrop_path, release_date;
+            original_title, backdrop_path, release_date, homepage, overview, tagline;
+    public String BASE_URL_POSTER = "https://image.tmdb.org/t/p/w500";
     private boolean video, adult;
     private float vote_average, popularity;
+    private List<Genre> genres;
+    private List<VideoResponse> videos;
+
 
     public int getVote_count() {
         return vote_count;
@@ -106,4 +112,133 @@ public class Movie {
     public void setPopularity(float popularity) {
         this.popularity = popularity;
     }
+
+    public int getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(int runtime) {
+        this.runtime = runtime;
+    }
+
+    public String getHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage(String homepage) {
+        this.homepage = homepage;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public List<VideoResponse> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(List<VideoResponse> videos) {
+        this.videos = videos;
+    }
+
+    public String getAllGenre(){
+        String allGenre = "";
+        for (int i=0; i< genres.size();i++) {
+            Genre genre = genres.get(i);
+            if (i>0){
+                allGenre += " ,  "+ genre.getName();
+            } else {
+                allGenre += genre.getName();
+            }
+        }
+        return allGenre;
+    }
+
+    public Movie() {
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.vote_count);
+        dest.writeInt(this.id);
+        dest.writeInt(this.runtime);
+        dest.writeString(this.title);
+        dest.writeString(this.poster_path);
+        dest.writeString(this.original_language);
+        dest.writeString(this.original_title);
+        dest.writeString(this.backdrop_path);
+        dest.writeString(this.release_date);
+        dest.writeString(this.homepage);
+        dest.writeString(this.overview);
+        dest.writeString(this.tagline);
+        dest.writeString(this.BASE_URL_POSTER);
+        dest.writeByte(this.video ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.adult ? (byte) 1 : (byte) 0);
+        dest.writeFloat(this.vote_average);
+        dest.writeFloat(this.popularity);
+        dest.writeList(this.genres);
+        dest.writeList(this.videos);
+    }
+
+    protected Movie(Parcel in) {
+        this.vote_count = in.readInt();
+        this.id = in.readInt();
+        this.runtime = in.readInt();
+        this.title = in.readString();
+        this.poster_path = in.readString();
+        this.original_language = in.readString();
+        this.original_title = in.readString();
+        this.backdrop_path = in.readString();
+        this.release_date = in.readString();
+        this.homepage = in.readString();
+        this.overview = in.readString();
+        this.tagline = in.readString();
+        this.BASE_URL_POSTER = in.readString();
+        this.video = in.readByte() != 0;
+        this.adult = in.readByte() != 0;
+        this.vote_average = in.readFloat();
+        this.popularity = in.readFloat();
+        this.genres = new ArrayList<Genre>();
+        in.readList(this.genres, Genre.class.getClassLoader());
+        this.videos = new ArrayList<VideoResponse>();
+        in.readList(this.videos, VideoResponse.class.getClassLoader());
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }
