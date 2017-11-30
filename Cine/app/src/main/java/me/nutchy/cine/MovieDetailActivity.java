@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,22 +40,18 @@ import me.nutchy.cine.Model.FavoriteMovieList;
 import me.nutchy.cine.Model.Movie;
 import me.nutchy.cine.Model.Movies;
 import me.nutchy.cine.Model.Rating;
+import me.nutchy.cine.Model.Ratings;
 
 
-public class MovieDetailActivity extends AppCompatActivity implements ConnectionAPI.ConnectionApiListener {
+public class MovieDetailActivity extends AppCompatActivity {
     DatabaseReference databaseReference, mRatingUserRef;
     private Movie movie;
+    private Ratings ratings;
     private FavoriteMovieList favoriteMovieList;
     private FirebaseUser user;
-    //    FirebaseStorage storage;
-    private Menu menu;
-
-    ConnectionAPI connectionAPI;
-
     ImageView cineStar, youStar, imdbStar;
     TextView cineRate, cineRateCount, userRate, userRateLabel, imdbRate, imdbRateCount;
     int userRating;
-    float movieRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +59,11 @@ public class MovieDetailActivity extends AppCompatActivity implements Connection
         setContentView(R.layout.activity_movie_detail);
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        connectionAPI = ConnectionAPI.getInstance();
-
-        int movieId = intent.getIntExtra("movieId", 0);
         user = FirebaseAuth.getInstance().getCurrentUser();
         movie = intent.getParcelableExtra("movie");
         favoriteMovieList = new FavoriteMovieList();
+        ratings = new Ratings();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        Log.e(">>>>", movieId+"");
         initToolbar();
         initRating();
         bindMovieDetail();
@@ -79,28 +73,19 @@ public class MovieDetailActivity extends AppCompatActivity implements Connection
         displayUserRaing();
         displayMovieRating();
     }
+
     private void displayMovieRating() {
         DatabaseReference mRatingMovieRef = databaseReference.child("ratings").child(String.valueOf(movie.getId()));
         mRatingMovieRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                movieRating = 0;
-                long totalChild = 0;
-
-                if (dataSnapshot.hasChildren()) {
-                    totalChild += dataSnapshot.getChildrenCount();
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        Rating rating = ds.getValue(Rating.class);
-                        try {
-                            movieRating += rating.getRating();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    movieRating = movieRating / totalChild;
-                    cineRate.setText(String.valueOf(movieRating + "/10"));
-                    cineRateCount.setText(String.valueOf(totalChild));
+                ratings.getRatings().clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Rating rating = ds.getValue(Rating.class);
+                    ratings.add(rating);
                 }
+                cineRate.setText(ratings.getAverage());
+                cineRateCount.setText(ratings.getCount());
             }
 
             @Override
@@ -171,7 +156,7 @@ public class MovieDetailActivity extends AppCompatActivity implements Connection
             @Override
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(MovieDetailActivity.this);
-//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setTitle("How would you rate " + movie.getTitle());
                 dialog.setContentView(R.layout.rating_dialog);
                 dialog.setCancelable(true);
@@ -224,8 +209,6 @@ public class MovieDetailActivity extends AppCompatActivity implements Connection
 
             }
         });
-
-
     }
 
     public void onClickFavorite(MenuItem item) {
@@ -265,12 +248,34 @@ public class MovieDetailActivity extends AppCompatActivity implements Connection
     private void addRatingToFirebase(int rating) {
         DatabaseReference mRatingRef = databaseReference
                 .child("user-ratings").child(String.valueOf(movie.getId())).child(user.getUid());
-        DatabaseReference mRatingMovieRef = databaseReference.child("ratings").child(String.valueOf(movie.getId()));
+        final DatabaseReference mRatingMovieRef = databaseReference.child("ratings").child(String.valueOf(movie.getId()));
+
+
+        mRatingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            String prevKey = "";
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Rating userRating = ds.getValue(Rating.class);
+                    if (userRating != null) {
+                        prevKey = userRating.getKey();
+                        System.out.println(prevKey);
+                        mRatingMovieRef.child(prevKey).setValue(null);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         String key = mRatingRef.push().getKey();
-        Rating mRating = new Rating(user.getUid(), movie.getId(), rating);
+        Rating mRating = new Rating(user.getUid(), movie.getId(), rating, key);
         mRatingRef.setValue(null);
         mRatingRef.child(key).setValue(mRating);
-        mRatingMovieRef.setValue(null);
         mRatingMovieRef.child(key).setValue(mRating);
     }
 
@@ -317,7 +322,6 @@ public class MovieDetailActivity extends AppCompatActivity implements Connection
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.movie_detail_menu, menu);
-        this.menu = menu;
         initFavorite(menu.getItem(0));
         return true;
     }
@@ -330,25 +334,5 @@ public class MovieDetailActivity extends AppCompatActivity implements Connection
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onMovieResponse(Movie movie) {
-
-    }
-
-    @Override
-    public void onUpcomingResponse(Movies movies) {
-
-    }
-
-    @Override
-    public void onPopularResponse(Movies movies) {
-
-    }
-
-    @Override
-    public void onNowShowingResponse(Movies movies) {
-
     }
 }

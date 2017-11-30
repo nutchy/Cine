@@ -5,7 +5,7 @@ package me.nutchy.cine.Model;
  */
 
 public class Rating {
-    private String uid;
+    private String uid, key;
     private int rating, movieId;
 
     public Rating(){}
@@ -14,6 +14,17 @@ public class Rating {
         this.uid = uid;
         this.movieId = movieId;
         this.rating = rating;
+    }
+
+    public Rating(String uid, int movieId, int rating,String key) {
+        this.uid = uid;
+        this.key = key;
+        this.rating = rating;
+        this.movieId = movieId;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public String getUid() {
@@ -39,4 +50,5 @@ public class Rating {
     public void setRating(int rating) {
         this.rating = rating;
     }
+
 }
