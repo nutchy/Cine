@@ -5,15 +5,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="me.nutchy.cine.LoginActivity">
-    <RelativeLayout
+    tools:context="me.nutchy.cine.LoginActivity"
+    android:background="@drawable/splash_bg">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="40dp">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="bottom"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:src="@mipmap/logo"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="12dp"/>
+            <TextView
+                android:textColor="#FFFFFF"
+                android:shadowColor="#EE000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textStyle="bold"
+                android:textSize="80sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:gravity="bottom|center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="150dp">
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"/>
-    </RelativeLayout>
+            android:layout_gravity="center|bottom"/>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
