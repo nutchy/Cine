@@ -19,7 +19,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -44,13 +46,14 @@ public class MainActivity extends AppCompatActivity
         MoviesAdapter.MoviesAdapterListener, ConnectionAPI.ConnectionApiListener {
 
     ConnectionAPI connectionAPI;
-
+    LinearLayout loadingLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         connectionAPI = ConnectionAPI.getInstance();
         connectionAPI.setListener(this);
         setContentView(R.layout.activity_main);
+        loadingLayout = (LinearLayout) this.findViewById(R.id.loading);
         initLayout();
         initContent();
     }
@@ -67,6 +70,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void prepareMovieDetail(Movie movie){
+        loadingLayout.setVisibility(LinearLayout.VISIBLE);
+        // Disable Touch
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         connectionAPI.getMovieById(movie.getId());
     }
 
@@ -167,6 +174,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMovieResponse(Movie movie) {
         startMovieDetailActivity(movie);
+        loadingLayout.setVisibility(LinearLayout.GONE);
+        // Enable Touch
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
     @Override

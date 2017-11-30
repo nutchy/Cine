@@ -31,26 +31,25 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import me.nutchy.cine.Adapter.CommentsAdapter;
+import me.nutchy.cine.Api.ConnectionAPI;
 import me.nutchy.cine.Api.TmdbApi;
 import me.nutchy.cine.Model.Comment;
 import me.nutchy.cine.Model.FavoriteMovie;
 import me.nutchy.cine.Model.FavoriteMovieList;
 import me.nutchy.cine.Model.Movie;
+import me.nutchy.cine.Model.Movies;
 import me.nutchy.cine.Model.Rating;
-import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MovieDetailActivity extends AppCompatActivity {
+
+public class MovieDetailActivity extends AppCompatActivity implements ConnectionAPI.ConnectionApiListener {
     DatabaseReference databaseReference, mRatingUserRef;
     private Movie movie;
     private FavoriteMovieList favoriteMovieList;
     private FirebaseUser user;
     //    FirebaseStorage storage;
     private Menu menu;
+
+    ConnectionAPI connectionAPI;
 
     ImageView cineStar, youStar, imdbStar;
     TextView cineRate, cineRateCount, userRate, userRateLabel, imdbRate, imdbRateCount;
@@ -63,6 +62,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
         ButterKnife.bind(this);
         Intent intent = getIntent();
+        connectionAPI = ConnectionAPI.getInstance();
+
         int movieId = intent.getIntExtra("movieId", 0);
         user = FirebaseAuth.getInstance().getCurrentUser();
         movie = intent.getParcelableExtra("movie");
@@ -331,4 +332,23 @@ public class MovieDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onMovieResponse(Movie movie) {
+
+    }
+
+    @Override
+    public void onUpcomingResponse(Movies movies) {
+
+    }
+
+    @Override
+    public void onPopularResponse(Movies movies) {
+
+    }
+
+    @Override
+    public void onNowShowingResponse(Movies movies) {
+
+    }
 }

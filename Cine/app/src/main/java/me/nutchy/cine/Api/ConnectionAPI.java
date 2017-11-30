@@ -20,11 +20,8 @@ public class ConnectionAPI {
         void onPopularResponse(Movies movies);
         void onNowShowingResponse(Movies movies);
     }
-    private ConnectionApiListener listener;
 
-    public ConnectionApiListener getListener() {
-        return listener;
-    }
+    private ConnectionApiListener listener;
 
     public void setListener(ConnectionApiListener listener) {
         this.listener = listener;

@@ -1,7 +1,5 @@
 package me.nutchy.cine.Api;
 
-import java.util.List;
-
 import me.nutchy.cine.Model.Movie;
 import me.nutchy.cine.Model.Movies;
 import retrofit2.Call;
