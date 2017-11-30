@@ -2,17 +2,19 @@ package me.nutchy.cine;
 
 import me.nutchy.cine.Exception.CommentException;
 import me.nutchy.cine.Interface.Validation;
+import me.nutchy.cine.Model.Comment;
 import me.nutchy.cine.Model.ResultValidation;
 
-/**
- * Created by nutchy on 1/12/2017 AD.
- */
+
 
 public class CommentValidation implements Validation{
     @Override
     public ResultValidation validate(String comment) {
         try{
             isEmpty(comment);
+            isNull(comment);
+            lengthNotMoreThanOneChar(comment);
+            lengthMoreThanOneHundredFourtyChar(comment);
 
         }
         catch (Exception e){
@@ -26,4 +28,24 @@ public class CommentValidation implements Validation{
             throw new CommentException("Comment is Empty");
         }
     }
+
+    public void isNull(String cm) throws CommentException {
+        if(cm==null){
+            throw new CommentException("Comment is null");
+        }
+    }
+
+    public void lengthNotMoreThanOneChar(String cm) throws CommentException {
+        if (cm.length() == 1) {
+            throw  new CommentException("Comment is too short.");
+        }
+    }
+
+    public void lengthMoreThanOneHundredFourtyChar(String cm) throws CommentException{
+        if (cm.length() > 140){
+            throw new CommentException("Comment is too long.");
+        }
+    }
+
+
 }

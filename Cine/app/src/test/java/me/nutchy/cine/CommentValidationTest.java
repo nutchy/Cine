@@ -25,5 +25,25 @@ public class CommentValidationTest {
         ResultValidation result = commentValidation.validate(comment.getComment());
         assertFalse(result.getMessage(), result.getResult());
     }
-    
+
+    @Test
+    public void isNull(){
+        comment.setComment(null);
+        ResultValidation result = commentValidation.validate(comment.getComment());
+        assertFalse(result.getMessage(), result.getResult());
+    }
+
+    @Test
+    public void lengthNotMoreThanOneChar(){
+        comment.setComment("a");
+        ResultValidation result = commentValidation.validate(comment.getComment());
+        assertFalse(result.getMessage(), result.getResult());
+    }
+
+    @Test
+    public void lengthVeryLong(){
+        comment.setComment("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz");
+        ResultValidation result = commentValidation.validate(comment.getComment());
+        assertFalse(result.getMessage(), result.getResult());
+    }
 }
