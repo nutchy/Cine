@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
 
     ConnectionAPI connectionAPI;
     LinearLayout loadingLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         prepareMovieDetail(movie);
     }
 
-    private void prepareMovieDetail(Movie movie){
+    private void prepareMovieDetail(Movie movie) {
         loadingLayout.setVisibility(LinearLayout.VISIBLE);
         // Disable Touch
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -77,24 +78,16 @@ public class MainActivity extends AppCompatActivity
         connectionAPI.getMovieById(movie.getId());
     }
 
-    private void startMovieDetailActivity(Movie movie){
+    private void startMovieDetailActivity(Movie movie) {
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra("movie", movie);
         startActivity(intent);
     }
 
-    public void initLayout(){
+    public void initLayout() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Unsupported Search Function", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -112,9 +105,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void setUserDetail(View view){
+    public void setUserDetail(View view) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user != null){
+        if (user != null) {
             TextView tv_fullName = view.findViewById(R.id.nav_fullName);
             TextView tv_email = view.findViewById(R.id.nav_email);
             ImageView iv_avatar = view.findViewById(R.id.nav_avatar);
@@ -151,6 +144,10 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            Snackbar.make(findViewById(android.R.id.content), "Developed By Chayanon Thongpila", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+
             return true;
         }
 
@@ -219,7 +216,7 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(moviesAdapter);
     }
 
-    public void userLogout(){
+    public void userLogout() {
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
         finish();
