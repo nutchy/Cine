@@ -310,7 +310,7 @@
                     app:met_baseColor="@color/colorFontContent"
                     app:met_primaryColor="@color/colorFontContent"
                     app:met_floatingLabel="highlight"
-                    app:met_maxCharacters="280"
+                    app:met_maxCharacters="140"
                     app:met_minCharacters="0" />
 
                 <Button

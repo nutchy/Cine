@@ -41,6 +41,7 @@ import me.nutchy.cine.Model.Movie;
 import me.nutchy.cine.Model.Movies;
 import me.nutchy.cine.Model.Rating;
 import me.nutchy.cine.Model.Ratings;
+import me.nutchy.cine.Model.ResultValidation;
 
 
 public class MovieDetailActivity extends AppCompatActivity {
@@ -240,17 +241,26 @@ public class MovieDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String comment = et_comment.getText().toString();
-                addCommentToFirebase(comment);
+                validateComment(comment);
             }
         });
+    }
+
+    private void validateComment(String comment){
+        CommentValidation commentValidation = new CommentValidation();
+        ResultValidation resultValidation = commentValidation.validate(comment);
+        if(resultValidation.getResult()){
+            // Passed
+            addCommentToFirebase(comment);
+        } else {
+            Toast.makeText(this, resultValidation.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void addRatingToFirebase(int rating) {
         DatabaseReference mRatingRef = databaseReference
                 .child("user-ratings").child(String.valueOf(movie.getId())).child(user.getUid());
         final DatabaseReference mRatingMovieRef = databaseReference.child("ratings").child(String.valueOf(movie.getId()));
-
-
         mRatingRef.addListenerForSingleValueEvent(new ValueEventListener() {
             String prevKey = "";
 
