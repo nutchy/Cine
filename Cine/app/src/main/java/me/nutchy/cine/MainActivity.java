@@ -40,7 +40,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MoviesAdapter.MoviesAdapterListener, ConnectionAPI.ConnectionApiListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        MoviesAdapter.MoviesAdapterListener, ConnectionAPI.ConnectionApiListener {
 
     ConnectionAPI connectionAPI;
 
@@ -58,23 +59,6 @@ public class MainActivity extends AppCompatActivity
         connectionAPI.getPopularList();
         connectionAPI.getUpcomingList();
         connectionAPI.getNowShowingList();
-    }
-
-    private void displayPopularList(Movies movies) {
-        MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
-        moviesAdapter.setMoviesAdapterListener(this);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_popular_movies);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.setAdapter(moviesAdapter);
-
-    }
-
-    private void displayUpcomingList(Movies movies) {
-        MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
-        moviesAdapter.setMoviesAdapterListener(this);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_upcoming_movies);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.setAdapter(moviesAdapter);
     }
 
     @Override
@@ -180,13 +164,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void userLogout(){
-        FirebaseAuth.getInstance().signOut();
-        LoginManager.getInstance().logOut();
-        finish();
-        startActivity(new Intent(this, LoginActivity.class));
-    }
-
     @Override
     public void onMovieResponse(Movie movie) {
         startMovieDetailActivity(movie);
@@ -207,11 +184,35 @@ public class MainActivity extends AppCompatActivity
         displayNowShowingList(movies);
     }
 
+    private void displayPopularList(Movies movies) {
+        MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
+        moviesAdapter.setMoviesAdapterListener(this);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_popular_movies);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(moviesAdapter);
+
+    }
+
+    private void displayUpcomingList(Movies movies) {
+        MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
+        moviesAdapter.setMoviesAdapterListener(this);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_upcoming_movies);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(moviesAdapter);
+    }
+
     private void displayNowShowingList(Movies movies) {
         MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
         moviesAdapter.setMoviesAdapterListener(this);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_now_showing);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(moviesAdapter);
+    }
+
+    public void userLogout(){
+        FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
+        finish();
+        startActivity(new Intent(this, LoginActivity.class));
     }
 }
