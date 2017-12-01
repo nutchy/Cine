@@ -21,7 +21,20 @@ public class ConnectionAPI {
         void onNowShowingResponse(Movies movies);
     }
 
+    public interface MoreDetailListener{
+        void onRecommendationsResponse(Movies movies);
+    }
+
     private ConnectionApiListener listener;
+    private MoreDetailListener mDetailListener;
+
+    public MoreDetailListener getmDetailListener() {
+        return mDetailListener;
+    }
+
+    public void setmDetailListener(MoreDetailListener mDetailListener) {
+        this.mDetailListener = mDetailListener;
+    }
 
     public void setListener(ConnectionApiListener listener) {
         this.listener = listener;
@@ -106,6 +119,24 @@ public class ConnectionAPI {
                     listener.onNowShowingResponse(moviesResponse);
                 }
             }
+            @Override
+            public void onFailure(Call<Movies> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getRecommendations(int movieId){
+        Call<Movies> call = tmdbApi.getRecommendations(movieId, TmdbApi.API_KEY);
+        call.enqueue(new Callback<Movies>() {
+            @Override
+            public void onResponse(Call<Movies> call, Response<Movies> response) {
+                if(response.isSuccessful()){
+                    Movies moviesResponse = response.body();
+                    mDetailListener.onRecommendationsResponse(moviesResponse);
+                }
+            }
+
             @Override
             public void onFailure(Call<Movies> call, Throwable t) {
 

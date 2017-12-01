@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity
 
     ConnectionAPI connectionAPI;
     LinearLayout loadingLayout;
+    Movie movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,6 +200,8 @@ public class MainActivity extends AppCompatActivity
     public void onNowShowingResponse(Movies movies) {
         displayNowShowingList(movies);
     }
+
+
 
     private void displayPopularList(Movies movies) {
         MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);

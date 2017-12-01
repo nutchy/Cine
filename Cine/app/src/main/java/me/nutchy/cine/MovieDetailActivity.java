@@ -32,6 +32,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import me.nutchy.cine.Adapter.CommentsAdapter;
+import me.nutchy.cine.Adapter.MoviesAdapter;
 import me.nutchy.cine.Api.ConnectionAPI;
 import me.nutchy.cine.Api.TmdbApi;
 import me.nutchy.cine.Model.Comment;
@@ -44,7 +45,8 @@ import me.nutchy.cine.Model.Ratings;
 import me.nutchy.cine.Model.ResultValidation;
 
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity implements ConnectionAPI.MoreDetailListener,
+        MoviesAdapter.MoviesAdapterListener{
     DatabaseReference databaseReference, mRatingUserRef;
     private Movie movie;
     private Ratings ratings;
@@ -73,6 +75,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         displayComment();
         displayUserRaing();
         displayMovieRating();
+        ConnectionAPI connectionAPI = ConnectionAPI.getInstance();
+        connectionAPI.setmDetailListener(this);
+        connectionAPI.getRecommendations(movie.getId());
     }
 
     private void displayMovieRating() {
@@ -350,5 +355,20 @@ public class MovieDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRecommendationsResponse(Movies movies) {
+        MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
+        moviesAdapter.setMoviesAdapterListener(this);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_recommend);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(moviesAdapter);
+    }
+
+    @Override
+    public void onItemClickListener(Movie movie) {
+        ConnectionAPI connectionAPI = ConnectionAPI.getInstance();
+        connectionAPI.getMovieById(movie.getId());
     }
 }

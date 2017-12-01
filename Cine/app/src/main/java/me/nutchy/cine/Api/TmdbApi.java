@@ -24,5 +24,8 @@ public interface TmdbApi {
     @GET("3/movie/now_playing")
     Call<Movies> getNowShowing(@Query("api_key") String api_key);
 
+    @GET("3/movie/{movie_id}/recommendations")
+    Call<Movies> getRecommendations(@Path("movie_id") int movie_id, @Query("api_key") String api_key);
+
 
 }
