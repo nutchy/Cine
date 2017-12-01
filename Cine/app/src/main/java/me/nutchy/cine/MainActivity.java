@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
 
     ConnectionAPI connectionAPI;
     LinearLayout loadingLayout;
-    Movie movie;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

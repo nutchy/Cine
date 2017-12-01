@@ -42,11 +42,17 @@ public class LoginActivity extends FragmentActivity {
     private static final String TAG = "LOGIN_TAG";
     private CallbackManager callbackManager;
     private FirebaseAuth mAuth;
+    LoginButton loginButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        
+
+
+        loginButton = findViewById(R.id.login_button);
+        if(AccessToken.getCurrentAccessToken() != null){
+            loginButton.setVisibility(View.GONE);
+        }
 
         //Show Landing , Splash
         new Handler().postDelayed(new Runnable() {
@@ -62,7 +68,6 @@ public class LoginActivity extends FragmentActivity {
         callbackManager = CallbackManager.Factory.create();
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-        final LoginButton loginButton = findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -70,7 +75,7 @@ public class LoginActivity extends FragmentActivity {
                 // App code
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
-                loginButton.setVisibility(View.GONE);
+
             }
 
             @Override
@@ -140,6 +145,8 @@ public class LoginActivity extends FragmentActivity {
     }
 
     private void onAuthSuccess(FirebaseUser firebaseUser) {
+
+
         String email = firebaseUser.getEmail();
         String imageUrl = String.valueOf(firebaseUser.getPhotoUrl());
         String fullName = firebaseUser.getDisplayName();
