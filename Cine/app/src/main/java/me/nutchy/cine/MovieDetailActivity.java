@@ -245,6 +245,7 @@ public class MovieDetailActivity extends AppCompatActivity implements Connection
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String comment = et_comment.getText().toString();
                 if(validateComment(comment)){
                     et_comment.setText("");

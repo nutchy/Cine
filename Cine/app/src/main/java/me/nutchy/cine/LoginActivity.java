@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.transition.Slide;
 import android.transition.TransitionInflater;
 import android.util.Log;
+import android.view.View;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -69,6 +70,7 @@ public class LoginActivity extends FragmentActivity {
                 // App code
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
+                loginButton.setVisibility(View.GONE);
             }
 
             @Override
@@ -103,6 +105,7 @@ public class LoginActivity extends FragmentActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             onAuthSuccess(mAuth.getCurrentUser());
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());

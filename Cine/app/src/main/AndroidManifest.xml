@@ -40,7 +40,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".UpcomingActivity" />
         <activity
             android:name=".MovieDetailActivity"
             android:windowSoftInputMode="adjustPan"
