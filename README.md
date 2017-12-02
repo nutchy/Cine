@@ -1,9 +1,8 @@
-
+<h1 align="center"> Cine </h1> <br>
 <p align="center">
   <a href="https://play.google.com/store/apps/details?id=me.nutchy.cine">
     <img alt="Cine" title="Cine" src="https://firebasestorage.googleapis.com/v0/b/cine-apps.appspot.com/o/cinelogo512.png?alt=media&token=b275de82-c5e1-4e99-8853-8a849810cf66" width="180">
   </a>
-  <h1 align="center"> Cine </h1> <br>
 </p>
 
 <h4 align="center">An application for rating movies</h4>
