@@ -1,11 +1,8 @@
 package me.nutchy.cine;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,9 +27,11 @@ import com.bumptech.glide.Glide;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import me.nutchy.cine.Adapter.MoviesAdapter;
 import me.nutchy.cine.Api.ConnectionAPI;
+import me.nutchy.cine.Api.FavoritesResponse;
 import me.nutchy.cine.Api.TmdbApi;
 import me.nutchy.cine.Model.Movie;
 import me.nutchy.cine.Model.Movies;
@@ -45,20 +44,24 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        MoviesAdapter.MoviesAdapterListener, ConnectionAPI.ConnectionApiListener {
+        MoviesAdapter.MoviesAdapterListener, ConnectionAPI.ConnectionApiListener, FavoritesResponse.FavoriteResponseListener {
 
     ConnectionAPI connectionAPI;
     LinearLayout loadingLayout;
-
+    FavoritesResponse favoritesResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupWindowAnimations();
+        favoritesResponse = FavoritesResponse.getInstance();
+        favoritesResponse.setListener(this);
         connectionAPI = ConnectionAPI.getInstance();
         connectionAPI.setListener(this);
         setContentView(R.layout.activity_main);
         loadingLayout = (LinearLayout) this.findViewById(R.id.loading);
+        loadingLayout.setVisibility(View.VISIBLE);
+
         initLayout();
         initContent();
     }
@@ -171,6 +174,16 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.logout) {
             userLogout();
+        } else if(id == R.id.nav_fav){
+            findViewById(R.id.ct_main).setVisibility(View.GONE);
+            findViewById(R.id.ct_fav).setVisibility(View.VISIBLE);
+            loadingLayout.setVisibility(View.VISIBLE);
+            FavoritesResponse.getInstance().getFavoriteList();
+        } else if(id == R.id.nav_home){
+            findViewById(R.id.ct_main).setVisibility(View.VISIBLE);
+            findViewById(R.id.ct_fav).setVisibility(View.GONE);
+
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -189,16 +202,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onUpcomingResponse(Movies movies) {
         displayUpcomingList(movies);
+        loadingLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void onPopularResponse(Movies movies) {
         displayPopularList(movies);
+        loadingLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void onNowShowingResponse(Movies movies) {
         displayNowShowingList(movies);
+        loadingLayout.setVisibility(View.GONE);
     }
 
 
@@ -233,5 +249,16 @@ public class MainActivity extends AppCompatActivity
         LoginManager.getInstance().logOut();
         finish();
         startActivity(new Intent(this, LoginActivity.class));
+    }
+
+    @Override
+    public void onFavoriteResponse(Movies movies) {
+        Log.e("onFavResponse", movies.getResults().size()+"");
+        MoviesAdapter moviesAdapter = new MoviesAdapter(movies, this);
+        moviesAdapter.setMoviesAdapterListener(this);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rc_favorite_movies);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setAdapter(moviesAdapter);
+        loadingLayout.setVisibility(View.GONE);
     }
 }

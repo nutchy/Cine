@@ -20,6 +20,13 @@ public class Movies implements Parcelable {
         this.results = results;
     }
 
+    public Movies(List<Movie> results) {
+        this.results = results;
+    }
+
+    public void add(Movie movie){
+        this.results.add(movie);
+    }
 
     @Override
     public int describeContents() {
