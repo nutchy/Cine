@@ -5,7 +5,10 @@
   </a>
   <h1 align="center"> Cine </h1> <br>
 </p>
-
+<p align="center">
+  <a href="https://badge.fury.io/gh/nutchy%2Ffinal_project_android">
+    <img src="https://badge.fury.io/gh/nutchy%2Ffinal_project_android.svg" alt="GitHub version" height="18"></a>          
+</p>
 <h4 align="center">An application for rating movies</h4>
 
 <p align="center">
@@ -13,11 +16,7 @@
     <img alt="Get it on Google Play" title="Google Play" src="http://i.imgur.com/mtGRPuM.png" width="140">
   </a>
 </p>
-</br>
-<p align="center">
-  <a href="https://badge.fury.io/gh/nutchy%2Ffinal_project_android">
-    <img src="https://badge.fury.io/gh/nutchy%2Ffinal_project_android.svg" alt="GitHub version" height="18"></a>          
-</p>
+
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
