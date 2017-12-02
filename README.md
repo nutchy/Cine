@@ -8,7 +8,7 @@
 <h4 align="center">An application for rating movies</h4>
 <p align="center">
   <a href="https://play.google.com/store/apps/details?id=me.nutchy.cine">
-    <img src="https://img.shields.io/badge/version-1.0-brightgreen.svg" alt="GitHub version" height="18"></a>
+    <img src="https://img.shields.io/badge/version-1.1-brightgreen.svg" alt="GitHub version" height="18"></a>
   <a href="https://badge.fury.io/gh/nutchy%2Ffinal_project_android">
     <img src="https://img.shields.io/badge/gradle-3.0.1-brightgreen.svg" alt="GitHub version" height="18"></a>
   <a href="https://badge.fury.io/gh/nutchy%2Ffinal_project_android">
