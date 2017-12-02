@@ -10,7 +10,7 @@
   <a href="https://play.google.com/store/apps/details?id=me.nutchy.cine">
     <img src="https://img.shields.io/badge/version-1.0-brightgreen.svg" alt="GitHub version" height="18"></a>
   <a href="https://badge.fury.io/gh/nutchy%2Ffinal_project_android">
-    <img src="https://img.shields.io/badge/gradlew-3.0.1-brightgreen.svg" alt="GitHub version" height="18"></a>
+    <img src="https://img.shields.io/badge/gradle-3.0.1-brightgreen.svg" alt="GitHub version" height="18"></a>
   <a href="https://badge.fury.io/gh/nutchy%2Ffinal_project_android">
     <img src="https://img.shields.io/badge/build-passing-brightgreen.svg" alt="GitHub version" height="18"></a>
 </p>
@@ -29,6 +29,7 @@
 - [User Interface](#user-interface)
 - [API](#api)
 - [Video](#video)
+- [APK Link](#apk)
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
@@ -405,3 +406,5 @@ Parameter : movid_id
 ## Video 
 ส่งภายในวันที่ 4
 
+## APK
+[Google Drive](https://drive.google.com/file/d/1RVs7aVrVVzt_iBQ7TeOkASjLjNbH0bVc/view?usp=sharing)
