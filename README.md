@@ -23,10 +23,10 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of Contents
 
-- [Feature](#Feature)
+- [Feature](#feature)
 - [User Interface](#user-interface)
-- [API](#API)
-- [Video](#Video)
+- [API](#api)
+- [Video](#video)
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
