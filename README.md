@@ -24,7 +24,7 @@
 ## Table of Contents
 
 - [Feature](#Feature)
-- [User Interface](#User Interface)
+- [User Interface](#user-interface)
 - [API](#API)
 - [Video](#Video)
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
