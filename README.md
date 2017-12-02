@@ -66,9 +66,9 @@
 ```
 GET /movie/upcoming
 
-https://api.themoviedb.org/3/movie/upcoming?api_key=<< api_key >>
+https://api.themoviedb.org/3/movie/upcoming?api_key=<<api_key>>?region=<< Specify a ISO 3166-1 >>
 
-Parameter : -
+Parameter : api_key, region
 ```
 ``` json
 {
@@ -144,9 +144,9 @@ Parameter : -
 ```
 GET /movie/now_playing
 
-https://api.themoviedb.org/3/movie/now_playing?api_key=<< api_key >>
+https://api.themoviedb.org/3/movie/now_playing?api_key=<<api_key>>?region=<< Specify a ISO 3166-1 >>
 
-Parameter : 
+Parameter : api_key, region
 ```
 ``` json
 {
@@ -228,7 +228,7 @@ GET /movie/popular
 
 https://api.themoviedb.org/3/movie/popular?api_key=<< api_key >>
 
-Parameter : - 
+Parameter : api_key
 ```
 ``` json
 {
