@@ -48,7 +48,7 @@ public class LoginActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
+        
         loginButton = findViewById(R.id.login_button);
         if(AccessToken.getCurrentAccessToken() != null){
             loginButton.setVisibility(View.GONE);
