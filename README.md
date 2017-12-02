@@ -5,21 +5,30 @@
   </a>
 </p>
 
+<h4 align="center">An application for rating movies</h4>
 <p align="center">
-  An application for rating movies.
+  <a href="https://play.google.com/store/apps/details?id=me.nutchy.cine">
+    <img src="https://img.shields.io/badge/version-1.0-brightgreen.svg" alt="GitHub version" height="18"></a>
+  <a href="https://badge.fury.io/gh/nutchy%2Ffinal_project_android">
+    <img src="https://img.shields.io/badge/gradlew-3.0.1-brightgreen.svg" alt="GitHub version" height="18"></a>
+  <a href="https://badge.fury.io/gh/nutchy%2Ffinal_project_android">
+    <img src="https://img.shields.io/badge/build-passing-brightgreen.svg" alt="GitHub version" height="18"></a>
 </p>
-
 <p align="center">
   <a href="https://play.google.com/store/apps/details?id=me.nutchy.cine">
     <img alt="Get it on Google Play" title="Google Play" src="http://i.imgur.com/mtGRPuM.png" width="140">
   </a>
 </p>
 
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of Contents
 
-- [Feature](#Feature)
+- [Feature](#feature)
+- [User Interface](#user-interface)
+- [API](#api)
+- [Video](#video)
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
@@ -31,10 +40,18 @@
 - เพิ่มหนังที่ชอบเป็นรายการโปรด"
 
 
-# User Interface
+## User Interface
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=me.nutchy.cine">
+    <img alt="Home" title="1" src="https://firebasestorage.googleapis.com/v0/b/cine-apps.appspot.com/o/1%400%2C75x.png?alt=media&token=72685b4d-1aba-436b-bebd-883980561422">
+  </a>
+  <br>
+  <a href="https://play.google.com/store/apps/details?id=me.nutchy.cine">
+    <img alt="Home" title="2" src="https://firebasestorage.googleapis.com/v0/b/cine-apps.appspot.com/o/2%400%2C75x.png?alt=media&token=0e45976c-29f2-43b4-994f-f923df36367e">
+  </a>
+</p>
 
-
-# API
+## API
 ### 1. Facebook SDK
 
 
