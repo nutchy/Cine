@@ -24,6 +24,9 @@
 ## Table of Contents
 
 - [Feature](#Feature)
+- [User Interface](#User Interface)
+- [API](#API)
+- [Video](#Video)
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
@@ -35,10 +38,10 @@
 - เพิ่มหนังที่ชอบเป็นรายการโปรด"
 
 
-# User Interface
+## User Interface
 
 
-# API
+## API
 ### 1. Facebook SDK
 
 
