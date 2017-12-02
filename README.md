@@ -5,12 +5,16 @@
   </a>
   <h1 align="center"> Cine </h1> <br>
 </p>
-<p align="center">
-  <a href="https://badge.fury.io/gh/nutchy%2Ffinal_project_android">
-    <img src="https://badge.fury.io/gh/nutchy%2Ffinal_project_android.svg" alt="GitHub version" height="18"></a>          
-</p>
-<h4 align="center">An application for rating movies</h4>
 
+<h4 align="center">An application for rating movies</h4>
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=me.nutchy.cine">
+    <img src="https://img.shields.io/badge/version-1.0-brightgreen.svg" alt="GitHub version" height="18"></a>
+  <a href="https://badge.fury.io/gh/nutchy%2Ffinal_project_android">
+    <img src="https://img.shields.io/badge/gradlew-3.0.1-brightgreen.svg" alt="GitHub version" height="18"></a>
+  <a href="https://badge.fury.io/gh/nutchy%2Ffinal_project_android">
+    <img src="https://img.shields.io/badge/build-passing-brightgreen.svg" alt="GitHub version" height="18"></a>
+</p>
 <p align="center">
   <a href="https://play.google.com/store/apps/details?id=me.nutchy.cine">
     <img alt="Get it on Google Play" title="Google Play" src="http://i.imgur.com/mtGRPuM.png" width="140">
