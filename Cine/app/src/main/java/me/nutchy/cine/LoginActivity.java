@@ -75,6 +75,7 @@ public class LoginActivity extends FragmentActivity {
                 // App code
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
+                loginButton.setVisibility(View.GONE);
 
             }
 
