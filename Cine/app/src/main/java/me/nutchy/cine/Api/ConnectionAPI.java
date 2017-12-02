@@ -76,7 +76,7 @@ public class ConnectionAPI {
     }
 
     public void getUpcomingList(){
-        Call<Movies> call = tmdbApi.getUpcoming(TmdbApi.API_KEY);
+        Call<Movies> call = tmdbApi.getUpcoming(TmdbApi.API_KEY, TmdbApi.REGION);
         call.enqueue(new Callback<Movies>() {
             @Override
             public void onResponse(Call<Movies> call, Response<Movies> response) {
@@ -93,7 +93,7 @@ public class ConnectionAPI {
     }
 
     public void getPopularList(){
-        Call<Movies> call = tmdbApi.getPopular(TmdbApi.API_KEY);
+        Call<Movies> call = tmdbApi.getPopular(TmdbApi.API_KEY, TmdbApi.REGION);
         call.enqueue(new Callback<Movies>() {
             @Override
             public void onResponse(Call<Movies> call, Response<Movies> response) {
@@ -110,7 +110,7 @@ public class ConnectionAPI {
     }
 
     public void getNowShowingList(){
-        Call<Movies> call = tmdbApi.getNowShowing(TmdbApi.API_KEY);
+        Call<Movies> call = tmdbApi.getNowShowing(TmdbApi.API_KEY, TmdbApi.REGION);
         call.enqueue(new Callback<Movies>() {
             @Override
             public void onResponse(Call<Movies> call, Response<Movies> response) {
