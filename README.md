@@ -50,7 +50,7 @@ Cine แอปพลิเคชันสำหรับคนที่ชอบ
 ## User Interface
 <p align="center">
   <a href="https://play.google.com/store/apps/details?id=me.nutchy.cine">
-    <img alt="Home" title="1" src="https://firebasestorage.googleapis.com/v0/b/cine-apps.appspot.com/o/1%400%2C75x.png?alt=media&token=72685b4d-1aba-436b-bebd-883980561422">
+    <img alt="Home" title="1" src="https://firebasestorage.googleapis.com/v0/b/cine-apps.appspot.com/o/1-2%400%2C75x.png?alt=media&token=23f3ca8e-6801-4696-a5ea-33bad950d6cc">
   </a>
   <br>
   <a href="https://play.google.com/store/apps/details?id=me.nutchy.cine">
