@@ -421,6 +421,8 @@ Parameter : movid_id
 [Cine - App Promo](https://youtu.be/YS-3GlKaJyU)
 <br>
 [Cine - Usability Testing](https://youtu.be/jfJ2t47YO_A)
+<br>
+[Cine - Monkey Test](https://youtu.be/Oj5nz6EMnPE)
 
 ## APK
 [Google Drive](https://drive.google.com/file/d/1RVs7aVrVVzt_iBQ7TeOkASjLjNbH0bVc/view?usp=sharing)
