@@ -32,6 +32,7 @@
 - [Constraints](#constraints)
 - [API](#api)
 - [Video](#video)
+- [PlayStore Link](#playstore-link)
 - [APK Link](#apk)
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -426,6 +427,9 @@ Parameter : movid_id
 [Cine - Usability Testing](https://youtu.be/jfJ2t47YO_A)
 <br>
 [Cine - Monkey Test](https://youtu.be/Oj5nz6EMnPE)
+
+## PlayStore Link
+[PlayStore Link](https://play.google.com/store/apps/details?id=me.nutchy.cine)
 
 ## APK
 [Google Drive](https://drive.google.com/file/d/1RVs7aVrVVzt_iBQ7TeOkASjLjNbH0bVc/view?usp=sharing)
