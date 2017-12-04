@@ -418,7 +418,8 @@ Parameter : movid_id
 ใช้ Firebase สำหรับการเก็บข้อมูลอื่นๆเพิ่มเติมเช่น ข้อมูลการแสดงความคิดเห็น , การให้คะแนน , ข้อมูลผู้ใช้ที่ได้จาก Facebook, เก็บหนังที่ชื่นชอบของผู้ใช้งาน อีกทั้งยังเป็นส่วนช่วยในการ Authentication ในการเพิ่มข้อมูล/โหวตคะแนน
 
 ## Video 
-[Cine App Promo](https://youtu.be/YS-3GlKaJyU)
+[Cine - App Promo](https://youtu.be/YS-3GlKaJyU)
+[Cine - Usability Testing](https://youtu.be/jfJ2t47YO_A)
 
 ## APK
 [Google Drive](https://drive.google.com/file/d/1RVs7aVrVVzt_iBQ7TeOkASjLjNbH0bVc/view?usp=sharing)
