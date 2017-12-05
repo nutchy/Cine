@@ -1,5 +1,7 @@
 package me.nutchy.cine.Api;
 
+import me.nutchy.cine.AddIdlingResources;
+import me.nutchy.cine.BuildConfig;
 import me.nutchy.cine.Model.Movie;
 import me.nutchy.cine.Model.Movies;
 import okhttp3.OkHttpClient;
@@ -42,6 +44,11 @@ public class ConnectionAPI {
 
     private ConnectionAPI (){
         client = new OkHttpClient.Builder().build();
+
+        if(BuildConfig.DEBUG) {
+            AddIdlingResources.registerOkHttp3(client);
+        }
+
         retrofit = new Retrofit
                 .Builder()
                 .baseUrl(TmdbApi.BASE_URL)

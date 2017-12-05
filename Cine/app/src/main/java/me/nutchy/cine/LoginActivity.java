@@ -43,7 +43,7 @@ import me.nutchy.cine.Model.User;
 
 public class LoginActivity extends FragmentActivity {
 
-    private static int SPLASH_TIME_OUT = 1200; // 1.5 sec
+    private static int SPLASH_TIME_OUT = 700; // 0.7 sec
 
     private static final String TAG = "LOGIN_TAG";
     private CallbackManager callbackManager;
