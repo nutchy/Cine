@@ -49,6 +49,8 @@ public class MainActivityTest {
                 .check(matches(withText("It")));
         onView(withRecyclerView(R.id.rc_popular_movies)
                 .atPositionOnView(0, R.id.iV_poster)).perform(click());
+        onView(withId(R.id.toolbar)).check(matches(isDisplayed()));
+        onView(withText("It")).check(matches(withParent(withId(R.id.toolbar))));
     }
 
     @Test
@@ -58,6 +60,8 @@ public class MainActivityTest {
                 .check(matches(withText("Thor: Ragnarok")));
         onView(withRecyclerView(R.id.rc_popular_movies)
                 .atPositionOnView(1, R.id.iV_poster)).perform(click());
+        onView(withId(R.id.toolbar)).check(matches(isDisplayed()));
+        onView(withText("Thor: Ragnarok")).check(matches(withParent(withId(R.id.toolbar))));
     }
 
     @Test
