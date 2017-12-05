@@ -29,9 +29,9 @@
 - [Introduction](#introduction)
 - [Feature](#feature)
 - [User Interface](#user-interface)
-- [Constraints](#constraints)
 - [API](#api)
 - [Video](#video)
+- [PlayStore Link](#playstore-link)
 - [APK Link](#apk)
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -57,15 +57,6 @@ Cine แอปพลิเคชันสำหรับคนที่ชอบ
     <img alt="Home" title="2" src="https://firebasestorage.googleapis.com/v0/b/cine-apps.appspot.com/o/2%400%2C75x.png?alt=media&token=0e45976c-29f2-43b4-994f-f923df36367e">
   </a>
 </p>
-
-## Constraints
-ในส่วนของข้อจำกัดต่างๆหรือสิ่งที่แอปควรจะมีแต่ยังไม่มีในแอปพลิเคชันสามารถลิสได้ดังนี้
-- ตัวแอปยังแสดงเนื้อหาเป็นภาษาอังกฤษอยู่ ทั้งนี้ในส่วนของเนื้อหาภาษาไทยก็สามารถดึงได้แต่ด้วยตัว API เป็นของทางต่างประเทศ ทำให้ข้อมูลที่เป็นภาษาอังกฤษนั้นมีความครบถ้วนมากกว่า
-- ยังสลับภาษาไม่ได้ (EN/TH)
-- ยังไม่มี Role ของ Admin เพื่อที่จะสามารถลบข้อมูลบางส่วน เช่น คอมเมนท์ ได้โดยตรงจากตัวแอปพลิเคชัน
-- ส่วนของหมวดหมู่ที่แบ่งไว้ในหน้าแรก ยังไม่สามารถแสดงจำนวนหนังเพิ่มเติมได้ (Show more)
-- ยังค้นหาหนังด้วยตัวเองไม่ได้
-- ยังไม่อนุญาตให้ผู้ใช้แก้ไข/ลบคอมเมนท์ของตนเองได้
 
 ## API
 ### 1. Facebook SDK
@@ -421,9 +412,14 @@ Parameter : movid_id
 ## Video 
 [Cine - App Promo](https://youtu.be/YS-3GlKaJyU)
 <br>
+[Cine - Presentation](https://youtu.be/FBuAdO3hrnk)
+<br>
 [Cine - Usability Testing](https://youtu.be/jfJ2t47YO_A)
 <br>
 [Cine - Monkey Test](https://youtu.be/Oj5nz6EMnPE)
+
+## PlayStore Link
+[PlayStore Link](https://play.google.com/store/apps/details?id=me.nutchy.cine)
 
 ## APK
 [Google Drive](https://drive.google.com/file/d/1RVs7aVrVVzt_iBQ7TeOkASjLjNbH0bVc/view?usp=sharing)
