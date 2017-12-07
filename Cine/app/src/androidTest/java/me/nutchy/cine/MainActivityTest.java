@@ -36,16 +36,13 @@ public class MainActivityTest {
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void mainActivityTest() {
+    public void popularResultTest() {
         onView(withRecyclerView(R.id.rc_popular_movies)
                 .atPositionOnView(0, R.id.tv_movieName))
                 .check(matches(withText("It")));
         onView(withRecyclerView(R.id.rc_popular_movies)
                 .atPositionOnView(1, R.id.tv_movieName))
                 .check(matches(withText("Thor: Ragnarok")));
-        onView(withRecyclerView(R.id.rc_popular_movies)
-                .atPositionOnView(2, R.id.tv_movieName))
-                .check(matches(withText("Justice League")));
     }
 
     @Test

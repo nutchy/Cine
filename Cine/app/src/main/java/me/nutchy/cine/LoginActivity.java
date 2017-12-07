@@ -72,7 +72,6 @@ public class LoginActivity extends FragmentActivity {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
                 loginButton.setVisibility(View.GONE);
-
             }
 
             @Override
@@ -89,12 +88,6 @@ public class LoginActivity extends FragmentActivity {
         });
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-    }
-
-    private void setupWindowAnimations() {
-        Slide slide = new Slide();
-        slide.setDuration(1000);
-        getWindow().setExitTransition(slide);
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -150,7 +143,6 @@ public class LoginActivity extends FragmentActivity {
 
     private void startMainActivity(){
         finish();
-        setupWindowAnimations();
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

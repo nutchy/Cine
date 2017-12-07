@@ -14,7 +14,6 @@ public class Movie implements Parcelable {
     private boolean video, adult;
     private float vote_average, popularity;
     private List<Genre> genres;
-    private List<VideoResponse> videos;
 
 
     public int getVote_count() {
@@ -153,14 +152,6 @@ public class Movie implements Parcelable {
         this.genres = genres;
     }
 
-    public List<VideoResponse> getVideos() {
-        return videos;
-    }
-
-    public void setVideos(List<VideoResponse> videos) {
-        this.videos = videos;
-    }
-
     public String getAllGenre(){
         String allGenre = "";
         for (int i=0; i< genres.size();i++) {
@@ -203,7 +194,6 @@ public class Movie implements Parcelable {
         dest.writeFloat(this.vote_average);
         dest.writeFloat(this.popularity);
         dest.writeList(this.genres);
-        dest.writeList(this.videos);
     }
 
     protected Movie(Parcel in) {
@@ -226,8 +216,6 @@ public class Movie implements Parcelable {
         this.popularity = in.readFloat();
         this.genres = new ArrayList<Genre>();
         in.readList(this.genres, Genre.class.getClassLoader());
-        this.videos = new ArrayList<VideoResponse>();
-        in.readList(this.videos, VideoResponse.class.getClassLoader());
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {

@@ -238,7 +238,7 @@ public class MovieDetailActivity extends AppCompatActivity implements Connection
 
     private void initComment() {
         final EditText et_comment = (EditText) findViewById(R.id.et_comment);
-        Button btn_comment = (Button) findViewById(R.id.btn_comment);
+        ImageView btn_comment = (ImageView) findViewById(R.id.btn_comment);
         btn_comment.setOnClickListener(new View.OnClickListener() {
 
             @Override

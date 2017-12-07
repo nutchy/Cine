@@ -345,26 +345,28 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:layout_marginTop="16dp">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
 
                     android:id="@+id/et_comment"
-                    android:layout_width="250dp"
+                    android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:hint="Comment"
                     app:met_baseColor="@color/colorFontContent"
                     app:met_primaryColor="@color/colorFontContent"
                     app:met_floatingLabel="highlight"
+                    android:layout_marginLeft="12dp"
                     app:met_maxCharacters="140"
                     app:met_minCharacters="0" />
 
-                <Button
-                    android:layout_marginLeft="16dp"
+                <ImageView
+                    android:layout_margin="12dp"
                     android:id="@+id/btn_comment"
-                    android:layout_width="wrap_content"
+                    android:layout_width="36dp"
                     android:layout_height="wrap_content"
-                    android:text="Send" />
+                    android:background="@drawable/ic_send_enabled"/>
+
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
