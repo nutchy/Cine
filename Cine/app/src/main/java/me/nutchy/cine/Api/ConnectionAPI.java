@@ -30,10 +30,6 @@ public class ConnectionAPI {
     private ConnectionApiListener listener;
     private MoreDetailListener mDetailListener;
 
-    public MoreDetailListener getmDetailListener() {
-        return mDetailListener;
-    }
-
     public void setmDetailListener(MoreDetailListener mDetailListener) {
         this.mDetailListener = mDetailListener;
     }

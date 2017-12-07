@@ -34,14 +34,6 @@ public class Comment {
         this.commentId = commentId;
     }
 
-    public int getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
-    }
-
     public String getComment() {
         return comment;
     }
@@ -56,10 +48,6 @@ public class Comment {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public String getUid() {
-        return uid;
     }
 
     public void setUid(String uid) {

@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
@@ -104,9 +105,16 @@ public class MainActivityTest {
     }
 
     @Test
-    public void favoriteBtnTest(){
+    public void favoriteBtnSingleTapTest(){
         onView(withRecyclerView(R.id.rc_popular_movies)
                 .atPositionOnView(0, R.id.iV_poster)).perform(click());
+        onView(withId(R.id.menu_favorite)).perform(click());
+    }
+    @Test
+    public void favoriteBtnDoubleTapTest(){
+        onView(withRecyclerView(R.id.rc_popular_movies)
+                .atPositionOnView(0, R.id.iV_poster)).perform(click());
+        onView(withId(R.id.menu_favorite)).perform(click());
         onView(withId(R.id.menu_favorite)).perform(click());
     }
 
@@ -121,6 +129,18 @@ public class MainActivityTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_fav));
         onView(withId(R.id.tv_fav_title)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void displayFirstChildRecommend(){
+        // MainActivity
+        onView(withRecyclerView(R.id.rc_now_showing)
+                .atPositionOnView(1, R.id.iV_poster)).perform(click());
+
+        onView(withId(R.id.rc_recommend)).perform(scrollTo());
+        //MovieDetailActivity
+        onView(withRecyclerView(R.id.rc_recommend)
+                .atPositionOnView(1, R.id.iV_poster)).perform(click());
     }
 
     public static ViewAction setProgress(final int progress) {
@@ -141,8 +161,6 @@ public class MainActivityTest {
             }
         };
     }
-
-
 }
 
 

@@ -10,9 +10,6 @@ public class FavoriteMovieList {
 
     }
 
-    public FavoriteMovieList(List<Movie> favoriteMovies) {
-        this.favoriteMovies = favoriteMovies;
-    }
     public void clear(){
         favoriteMovies.clear();
     }
@@ -20,22 +17,8 @@ public class FavoriteMovieList {
     public void add(Movie favoriteMovie){
         this.favoriteMovies.add(favoriteMovie);
     }
-    public void removeByIndex(int index){
-        this.favoriteMovies.remove(index);
-    }
 
     public List<Movie> getFavoriteMovies() {
         return favoriteMovies;
-    }
-    public void remove(Movie fm){
-        favoriteMovies.remove(fm);
-    }
-
-    public void removeByMovieId(int id) {
-        for(Movie fm: favoriteMovies){
-            if(fm.getId()==id){
-                favoriteMovies.remove(fm);
-            }
-        }
     }
 }

@@ -29,10 +29,6 @@ public class FavoritesResponse {
 
     private static FavoritesResponse instance;
 
-    public FavoriteResponseListener getListener() {
-        return listener;
-    }
-
     public void setListener(FavoriteResponseListener listener) {
         this.listener = listener;
     }
