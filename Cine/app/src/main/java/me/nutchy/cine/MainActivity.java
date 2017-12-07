@@ -7,7 +7,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -27,20 +26,12 @@ import com.bumptech.glide.Glide;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
 import me.nutchy.cine.Adapter.MoviesAdapter;
 import me.nutchy.cine.Api.ConnectionAPI;
 import me.nutchy.cine.Api.FavoritesResponse;
-import me.nutchy.cine.Api.TmdbApi;
 import me.nutchy.cine.Model.Movie;
 import me.nutchy.cine.Model.Movies;
-import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -100,22 +91,16 @@ public class MainActivity extends AppCompatActivity
     public void initLayout() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         // Binding for set values
         View headerView = navigationView.getHeaderView(0);
         setUserDetail(headerView);
-
-
     }
 
     public void setUserDetail(View view) {

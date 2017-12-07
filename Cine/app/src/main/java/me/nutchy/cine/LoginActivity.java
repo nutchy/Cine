@@ -1,17 +1,11 @@
 package me.nutchy.cine;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.transition.Slide;
-import android.transition.TransitionInflater;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 
@@ -32,10 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.pnikosis.materialishprogress.ProgressWheel;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import me.nutchy.cine.Model.User;
@@ -97,7 +87,6 @@ public class LoginActivity extends FragmentActivity {
                 Log.d(TAG, "facebook:onError");
             }
         });
-
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
     }
@@ -140,30 +129,22 @@ public class LoginActivity extends FragmentActivity {
     @Override
     public void onStart() {
         super.onStart();
-
-        // Check if user is signed in (non-null) and update UI accordingly.
-
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
     }
 
     private void onAuthSuccess(FirebaseUser firebaseUser) {
-
-
         String email = firebaseUser.getEmail();
         String imageUrl = String.valueOf(firebaseUser.getPhotoUrl());
         String fullName = firebaseUser.getDisplayName();
         String uid = firebaseUser.getUid();
         User user = new User(imageUrl, email, fullName, uid);
-
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference mUsers = mDatabase.child("users");
         mUsers.child(firebaseUser.getUid()).setValue(user);
-
         startMainActivity();
     }
 
@@ -173,10 +154,7 @@ public class LoginActivity extends FragmentActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-
     }
-
-
 }
 
 

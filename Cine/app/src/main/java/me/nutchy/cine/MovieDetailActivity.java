@@ -29,16 +29,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.List;
-
 import butterknife.ButterKnife;
 import me.nutchy.cine.Adapter.CommentsAdapter;
 import me.nutchy.cine.Adapter.MoviesAdapter;
 import me.nutchy.cine.Api.ConnectionAPI;
-import me.nutchy.cine.Api.TmdbApi;
 import me.nutchy.cine.Model.Comment;
-import me.nutchy.cine.Model.FavoriteMovie;
 import me.nutchy.cine.Model.FavoriteMovieList;
 import me.nutchy.cine.Model.Movie;
 import me.nutchy.cine.Model.Movies;
