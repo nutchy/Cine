@@ -85,13 +85,5 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesHold
         public ImageView getiV_poster() {
             return iV_poster;
         }
-
-        public void setiV_poster(ImageView iV_poster) {
-            this.iV_poster = iV_poster;
-        }
-
-        public void setTv_MovieName(TextView tv_MovieName) {
-            this.tv_MovieName = tv_MovieName;
-        }
     }
 }
