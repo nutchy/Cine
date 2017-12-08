@@ -1,9 +1,5 @@
 package me.nutchy.cine.Model;
 
-/**
- * Created by nutchy on 1/12/2017 AD.
- */
-
 public class ResultValidation {
     private boolean result;
     private String message;

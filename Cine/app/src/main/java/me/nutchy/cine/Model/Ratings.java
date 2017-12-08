@@ -4,10 +4,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by nutchy on 30/11/2017 AD.
- */
-
 public class Ratings {
     private List<Rating> ratings;
     public Ratings(){
