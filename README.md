@@ -31,6 +31,7 @@
 - [User Interface](#user-interface)
 - [API](#api)
 - [Video](#video)
+- [Coverage Code](#coverage-code)
 - [PlayStore Link](#playstore-link)
 - [APK Link](#apk)
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -408,6 +409,9 @@ Parameter : movid_id
 
 ### 3. Firebase
 ใช้ Firebase สำหรับการเก็บข้อมูลอื่นๆเพิ่มเติมเช่น ข้อมูลการแสดงความคิดเห็น , การให้คะแนน , ข้อมูลผู้ใช้ที่ได้จาก Facebook, เก็บหนังที่ชื่นชอบของผู้ใช้งาน อีกทั้งยังเป็นส่วนช่วยในการ Authentication ในการเพิ่มข้อมูล/โหวตคะแนน
+
+## Coverage Code 
+<img src="https://firebasestorage.googleapis.com/v0/b/cine-apps.appspot.com/o/Screen%20Shot%202560-12-08%20at%2011.30.17.png?alt=media&token=7baca844-7f17-496d-9f44-fa09a00f979a" />
 
 ## Video 
 [Cine - App Promo](https://youtu.be/YS-3GlKaJyU)
