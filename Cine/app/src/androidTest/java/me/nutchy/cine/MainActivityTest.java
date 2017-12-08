@@ -2,6 +2,11 @@ package me.nutchy.cine;
 
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.action.GeneralLocation;
+import android.support.test.espresso.action.GeneralSwipeAction;
+import android.support.test.espresso.action.Press;
+import android.support.test.espresso.action.Swipe;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
@@ -18,6 +23,8 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
@@ -115,6 +122,7 @@ public class MainActivityTest {
         onView(withRecyclerView(R.id.rc_popular_movies)
                 .atPositionOnView(0, R.id.iV_poster)).perform(click());
         onView(withId(R.id.menu_favorite)).perform(click());
+        onView(withId(android.R.id.content)).perform(ViewActions.swipeUp());
         onView(withId(R.id.menu_favorite)).perform(click());
     }
 
@@ -129,6 +137,16 @@ public class MainActivityTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_fav));
         onView(withId(R.id.tv_fav_title)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void commentToMovie(){
+        onView(withId(android.R.id.content)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rc_upcoming_movies)
+                .atPositionOnView(1, R.id.iV_poster)).perform(click());
+        onView(withId(android.R.id.content)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.et_comment)).perform(click(),replaceText("อยากดูจังเลยค่ะ"));
+        onView(withId(R.id.btn_comment)).perform(click());
     }
 
     public static ViewAction setProgress(final int progress) {

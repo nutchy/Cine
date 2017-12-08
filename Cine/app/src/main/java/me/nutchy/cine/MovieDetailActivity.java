@@ -371,4 +371,9 @@ public class MovieDetailActivity extends AppCompatActivity implements Connection
         ConnectionAPI connectionAPI = ConnectionAPI.getInstance();
         connectionAPI.getMovieById(movie.getId());
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
