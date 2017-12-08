@@ -149,6 +149,28 @@ public class MainActivityTest {
         onView(withId(R.id.btn_comment)).perform(click());
     }
 
+    @Test
+    public void emptyCommentToMovie(){
+        onView(withId(android.R.id.content)).perform(ViewActions.swipeUp());
+        onView(withRecyclerView(R.id.rc_upcoming_movies)
+                .atPositionOnView(1, R.id.iV_poster)).perform(click());
+        onView(withId(android.R.id.content)).perform(ViewActions.swipeUp());
+        onView(withId(R.id.et_comment)).perform(click(),replaceText(""));
+        onView(withId(R.id.btn_comment)).perform(click());
+    }
+
+    @Test
+    public void onPressMenuHome(){
+        // Open Drawer to click on navigation.
+        onView(withId(R.id.drawer_layout))
+                .check(matches(isClosed(Gravity.LEFT))) // Left Drawer should be closed.
+                .perform(DrawerActions.open()); // Open Drawer
+
+        // Show Content
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_home));
+    }
+
     public static ViewAction setProgress(final int progress) {
         return new ViewAction() {
             @Override
