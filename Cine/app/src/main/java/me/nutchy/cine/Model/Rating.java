@@ -10,12 +10,6 @@ public class Rating {
 
     public Rating(){}
 
-    public Rating(String uid, int movieId, int rating) {
-        this.uid = uid;
-        this.movieId = movieId;
-        this.rating = rating;
-    }
-
     public Rating(String uid, int movieId, int rating,String key) {
         this.uid = uid;
         this.key = key;
