@@ -131,18 +131,6 @@ public class MainActivityTest {
         onView(withId(R.id.tv_fav_title)).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void displayFirstChildRecommend(){
-        // MainActivity
-        onView(withRecyclerView(R.id.rc_now_showing)
-                .atPositionOnView(1, R.id.iV_poster)).perform(click());
-
-        onView(withId(R.id.rc_recommend)).perform(scrollTo());
-        //MovieDetailActivity
-        onView(withRecyclerView(R.id.rc_recommend)
-                .atPositionOnView(1, R.id.iV_poster)).perform(click());
-    }
-
     public static ViewAction setProgress(final int progress) {
         return new ViewAction() {
             @Override
